@@ -14,6 +14,8 @@ def import_xlsx(xlsx_path: str):
     return {"message": message}
 
 if __name__ == "__main__":
+    print("Testing import_xlsx")
+    
     os.environ["TABLE_NAME"] = "dsci551_acroDB"
     xlsx_path = os.path.join("data", "MAG_code_of_points.xlsx")
     print(import_xlsx(xlsx_path=xlsx_path))
