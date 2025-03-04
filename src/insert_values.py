@@ -1,8 +1,9 @@
 import boto3
 from decimal import Decimal
 import os
+from botocore.exceptions import ClientError
 
-def insert_value(event: any, context: any):
+def insert_value(event: any, context: any, force=False):
     
     # DynamoDB client
     dynamodb = boto3.resource("dynamodb")
@@ -14,7 +15,14 @@ def insert_value(event: any, context: any):
         event["mvtId"] = str(event["mvtId"])
     if not isinstance(event["value"], Decimal):
         event["value"] = Decimal(str(event["value"]))
-    table.put_item(Item=event)
+    if force: # replaces if mvtId already exists
+        table.put_item(Item=event)
+    else:
+        try:
+            table.put_item(Item=event, ConditionExpression='attribute_not_exists(mvtId)')
+        except ClientError as error:
+            if error.response['Error']['Code'] != 'ConditionalCheckFailedException':
+                raise
 
     # Return message
     message = f"mvtId {event['mvtId']} successfully inserted to {table_name}"
