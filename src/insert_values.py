@@ -21,7 +21,7 @@ def insert_value(event: any, context: any):
     return {"message": message}
 
 if __name__ == "__main__":
-    print("Testing insert_values"
+    print("Testing insert_values")
     
     os.environ["TABLE_NAME"] = "dsci551_acroDB"
     test_event = {"mvtId": "2", "difficulty": "A", "event": "MAG Floor", "group": "Non-acrobatic Elements", "image_s3_url": None, "name": "From hdst. lower to L-sit or strad. L-sit (2 s.)", "value": 0.1}
