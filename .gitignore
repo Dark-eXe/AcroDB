@@ -1,6 +1,9 @@
 # data
 data/
 
+# Project guidline
+Project_Guidline.pdf
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
