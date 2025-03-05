@@ -15,7 +15,7 @@ def insert_media(mvtId: str, media_path: str):
     pass
 
 if __name__ == "__main__":
-    os.environ["TABLE_NAME"] = "dsci551_acroDB"
+    os.environ["TABLE_NAME"] = "MAG_Code-of-Points"
 
     print(f"Insert media into {os.environ['TABLE_NAME']}.")
     print("-" * 50)

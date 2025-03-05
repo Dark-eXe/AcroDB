@@ -24,7 +24,7 @@ def get_value(mvtId: str) -> dict:
     return response
 
 if __name__ == "__main__":
-    os.environ["TABLE_NAME"] = "dsci551_acroDB"
+    os.environ["TABLE_NAME"] = "MAG_Code-of-Points"
 
     print(f"Get item from {os.environ['TABLE_NAME']}.")
     print("-" * 50)
