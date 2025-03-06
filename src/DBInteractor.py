@@ -22,6 +22,7 @@ class DBInteractor():
         return self.__bucket
 
     def set_table(self, table_name: str) -> None:
+        self.__table_name = table_name
         self.__table = boto3.resource("dynamodb").Table(table_name)
 
     def set_bucket(self, bucket_name: str) -> None:
