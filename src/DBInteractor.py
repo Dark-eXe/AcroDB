@@ -123,7 +123,7 @@ class DBInteractor():
         #response_2 = self.insert_s3_url(self, mvtId=mvtId)
         pass
 
-if __name__ == "__main__":
+def main():
     print("Test for AWS Client and DynamoDB table for DBInteractor instance")
     print("-" * 50)
     table_name = input("Enter DynamoDB Table name: ")
@@ -142,3 +142,6 @@ if __name__ == "__main__":
     print("")
     print("Success! Valid AWS Client and DBInteractor instance.")
     print("")
+
+if __name__ == "__main__":
+    main()
