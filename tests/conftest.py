@@ -23,7 +23,7 @@ def mock_acrodb(table_name, bucket_name):
         mock_s3_bucket = MagicMock()
         mock_s3_bucket.name = bucket_name
 
-        # Provide table_name argument
+        # Mock AcroDB instance
         mock_acro = AcroDB(table_name=table_name)
         mock_acro.get_table = MagicMock(return_value=MagicMock(table_name=table_name))
         mock_acro.get_bucket = MagicMock(return_value=bucket_name)
