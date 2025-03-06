@@ -1,8 +1,9 @@
 import pytest
 from src import AcroDB
 
-def main():
-    pass
+def test_constructor(test_object):
+    myAcroDB = test_object
+    assert True
 
-if __name__ == "__main__":
-    main()
+def test_get_item():
+    assert True
