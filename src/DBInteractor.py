@@ -51,7 +51,7 @@ class DBInteractor():
         # Type checking -> mvtId: str, value: Decimal as supported by AWS
         if not isinstance(Item["mvtId"], str):
             Item["mvtId"] = str(Item["mvtId"])
-        if not isinstance(event["value"], Decimal):
+        if not isinstance(Item["value"], Decimal):
             Item["value"] = Decimal(str(Item["value"]))
 
         # Invoke put_item
