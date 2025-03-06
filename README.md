@@ -10,4 +10,4 @@ DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour diction
 > partition key: 'mvtId'
 
 S3: Multimedia for movement demonstrations
-> key: '<dynamodb_table>/mvtId-\<mvtId\>'
+> key: '<dynamodb_table>/mvtId-\<mvtId\>.\<multimedia_extension\>'
