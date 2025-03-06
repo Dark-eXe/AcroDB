@@ -5,6 +5,6 @@ Chat-queried NoSQL database for gymnastics & acrobatic elements using AWS Dynamo
 - Python with openai *probably*
 - *TBD*: Web UI or GUI, currently CLI
 ## Database Contents
-High-level description of database contents. Requires AWS client permissions for access.
+High-level description of database contents. Requires AWS client permissions for access (closed to public for now).
 - DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary (to be joined)
 - S3: Multimedia for movement demonstrations
