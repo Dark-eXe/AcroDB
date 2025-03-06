@@ -94,9 +94,9 @@ class AcroDB():
             ExpiresIn=ExpiresIn
         )
 
-    def insert_s3_url(self, mvtId: str) -> dict:
+    def insert_s3_url(self, mvtId: str, ext: str = "png") -> dict:
         # Define parameters
-        Key = f"{self.__table_name}/mvtId-{mvtId}.png"
+        Key = f"{self.__table_name}/mvtId-{mvtId}.{ext}"
         Item = self.get_item(mvtId=mvtId)
 
         # Generate URL
@@ -134,7 +134,7 @@ def main():
         table_name=table_name, 
         bucket_name=bucket_name
     )
-    test_sample = AcroDB.get_item(mvtId="1")
+    test_sample = myAcroDB.get_item(mvtId="1")
     if not test_sample:
         print("Failed. Invalid AWS Client or DynamoDB table")
         print("")
