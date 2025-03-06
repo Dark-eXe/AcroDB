@@ -1,13 +1,34 @@
 import pytest
+from unittest.mock import MagicMock, patch
 from src import AcroDB
 
-table_name = "MAG_Code-of-Points"
-bucket_name = "dsci551-acrobucket"
+@pytest.fixture
+def table_name():
+    return "MAG_Code-of-Points"
 
 @pytest.fixture
-def test_object():
-    return AcroDB(table_name=table_name, bucket_name=bucket_name)
-    
+def bucket_name():
+    return "dsci551-acrobucket"
+
 @pytest.fixture
-def test_mvtId():
-    return "1"
+def mock_acrodb(table_name, bucket_name):
+    with patch("src.AcroDB.boto3") as mock_boto:
+        # Mock DynamoDB Table
+        mock_dynamodb = mock_boto.resource.return_value
+        mock_table = mock_dynamodb.Table.return_value
+        mock_table.table_name = table_name
+
+        # Mock S3 Bucket
+        mock_s3 = mock_boto.client.return_value
+        mock_s3_bucket = MagicMock()
+        mock_s3_bucket.name = bucket_name
+
+        # Provide table_name argument
+        mock_acro = AcroDB(table_name=table_name)
+        mock_acro.get_table = MagicMock(return_value=MagicMock(table_name=table_name))
+        mock_acro.get_bucket = MagicMock(return_value=bucket_name)
+        mock_acro.get_item = MagicMock(return_value={"mvtId": "test_mvtId"})
+        mock_acro.put_item = MagicMock(return_value={"message": f"mvtId test_mvtId successfully inserted to {table_name}"})
+        mock_acro.insert_s3_url = MagicMock(return_value={"message": f"mvtId test_mvtId successfully inserted to {table_name}"})
+
+        yield mock_acro
