@@ -82,10 +82,10 @@ class AcroDB():
 
     # S3 Bucket Media URL Interactions
     ################################
-    def __generate_s3_url(self, mvtId: str, ExpiresIn: int = 604800) -> str:
+    def __generate_s3_url(self, Bucket: str, Key: str, ExpiresIn: int = 604800) -> str:
         # Define parameters for generate_presigned_url
         ClientMethod = 'get_object'
-        Params = {'Bucket': self.__bucket, 'Key': mvtId}
+        Params = {'Bucket': self.__bucket, 'Key': Key}
 
         # Invoke generate_presigned_url
         return boto3.client('s3').generate_presigned_url(
@@ -125,23 +125,7 @@ class AcroDB():
         pass
 
 def main():
-    print("Test for AWS Client and DynamoDB table for AcroDB instance")
-    print("-" * 50)
-    table_name = input("Enter DynamoDB Table name: ")
-    bucket_name = input("(optional) Enter S3 Bucket name: ")
-    
-    myAcroDB = AcroDB(
-        table_name=table_name, 
-        bucket_name=bucket_name
-    )
-    test_sample = myAcroDB.get_item(mvtId="1")
-    if not test_sample:
-        print("Failed. Invalid AWS Client or DynamoDB table")
-        print("")
-        exit()
-
-    print("")
-    print("Success! Valid AWS Client and AcroDB instance.")
+    print("Script for AcroDB class.")
     print("")
 
 if __name__ == "__main__":
