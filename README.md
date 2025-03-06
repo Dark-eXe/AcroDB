@@ -5,6 +5,9 @@ Chat-queried NoSQL database for gymnastics & parkour elements using AWS DynamoDB
 - Python with openai *probably*
 - *TBD*: Web UI or GUI, currently CLI
 ## Database Contents
-Requires AWS client permissions for access (closed to public for now).
-- DynamoDB ('mvtId' partition key): MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary (to be joined)
-- S3 ('<dynamodb_table>/mvtId-\<mvtId\>' key): Multimedia for movement demonstrations
+Requires AWS client permissions for access (closed to public for now).<br><br>
+DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary (to be joined)
+> partition key: 'mvtId'
+
+S3: Multimedia for movement demonstrations
+> key: '<dynamodb_table>/mvtId-\<mvtId\>'
