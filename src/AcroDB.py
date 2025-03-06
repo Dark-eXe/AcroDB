@@ -5,7 +5,7 @@ import pandas as pd
 from decimal import Decimal
 from botocore.exceptions import ClientError
 
-class DBInteractor():
+class AcroDB():
     # Constructor
     ################################
     def __init__(self, table_name: str, bucket_name: str = None):
@@ -125,23 +125,23 @@ class DBInteractor():
         pass
 
 def main():
-    print("Test for AWS Client and DynamoDB table for DBInteractor instance")
+    print("Test for AWS Client and DynamoDB table for AcroDB instance")
     print("-" * 50)
     table_name = input("Enter DynamoDB Table name: ")
     bucket_name = input("(optional) Enter S3 Bucket name: ")
     
-    myDBInteractor = DBInteractor(
+    myAcroDB = AcroDB(
         table_name=table_name, 
         bucket_name=bucket_name
     )
-    test_sample = myDBInteractor.get_item(mvtId="1")
+    test_sample = AcroDB.get_item(mvtId="1")
     if not test_sample:
         print("Failed. Invalid AWS Client or DynamoDB table")
         print("")
         exit()
 
     print("")
-    print("Success! Valid AWS Client and DBInteractor instance.")
+    print("Success! Valid AWS Client and AcroDB instance.")
     print("")
 
 if __name__ == "__main__":
