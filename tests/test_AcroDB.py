@@ -9,7 +9,6 @@ def test_getters(mock_acrodb, table_name, bucket_name):
     assert mock_acrodb.get_table().table_name == table_name
     assert mock_acrodb.get_bucket() == bucket_name
 
-
 @pytest.mark.parametrize(
     "new_table_name, new_bucket_name", 
     [("yin_table", "yin_bucket"), ("yan_table", "yan_bucket")]
