@@ -8,11 +8,12 @@ from botocore.exceptions import ClientError
 class AcroDB():
     # Constructor
     ################################
-    def __init__(self, table_name: str, bucket_name: str = None):
+    def __init__(self, table_name: str, bucket_name: str=None):
         self.__table_name = table_name
         self.__table = boto3.resource("dynamodb").Table(table_name)
         self.__bucket = bucket_name
         self.__s3_client = boto3.client('s3')
+        self.__db_client = boto3.client('dynamodb')
 
     # Setters & Getters
     ################################
@@ -48,7 +49,7 @@ class AcroDB():
             
         return response["Item"]
 
-    def put_item(self, Item: dict, force: bool = False):
+    def put_item(self, Item: dict, force: bool=False):
         # Type checking -> mvtId: str, value: Decimal as supported by AWS
         if not isinstance(Item["mvtId"], str):
             Item["mvtId"] = str(Item["mvtId"])
@@ -83,7 +84,7 @@ class AcroDB():
 
     # S3 Bucket Media URL Interactions
     ################################
-    def __generate_s3_url(self, Bucket: str, Key: str, ExpiresIn: int = 604800) -> str:
+    def __generate_s3_url(self, Bucket: str, Key: str, ExpiresIn: int=604800) -> str:
         # Define parameters for generate_presigned_url
         ClientMethod = 'get_object'
         Params = {'Bucket': self.__bucket, 'Key': Key}
@@ -142,8 +143,20 @@ class AcroDB():
 
     # Query
     ################################
-    def query(query: str):
-        pass
+    def query(
+        IndexName: str=None, Limit: int=100, Select: str="ALL_ATTRIBUTES",
+        ProjectionExpression: str="", FilterExpression: str="",
+        ExpressionAttributeNames: dict={}, ExpressionAttributeValues: dict={}
+    ):
+        return self.__db_client.scan(
+            TableName=self.__table_name,
+            IndexName=IndexName,
+            Limit=Limit,
+            ProjectionExpression=ProjectionExpression,
+            FilterExpression=FilterExpression,
+            ExpressionAttributeNames=ExpressionAttributeNames,
+            ExpressionAttributeValues=ExpressionAttributeValues
+        )
 
     # Miscellaneous
     ################################
