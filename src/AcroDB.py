@@ -12,6 +12,7 @@ class AcroDB():
         self.__table_name = table_name
         self.__table = boto3.resource("dynamodb").Table(table_name)
         self.__bucket = bucket_name
+        self.__s3_client = boto3.client('s3')
 
     # Setters & Getters
     ################################
@@ -88,15 +89,15 @@ class AcroDB():
         Params = {'Bucket': self.__bucket, 'Key': Key}
 
         # Invoke generate_presigned_url
-        return boto3.client('s3').generate_presigned_url(
+        return self.__s3_client.generate_presigned_url(
             ClientMethod=ClientMethod,
             Params=Params,
             ExpiresIn=ExpiresIn
         )
 
-    def insert_s3_url(self, mvtId: str, ext: str = "png") -> dict:
+    def insert_s3_url(self, mvtId: str, ext: str) -> dict:
         # Define parameters
-        Key = f"{self.__table_name}/mvtId-{mvtId}.{ext}"
+        Key = f"{self.__table_name}/mvtId-{mvtId}{ext}"
         Item = self.get_item(mvtId=mvtId)
 
         # Generate URL
@@ -106,23 +107,45 @@ class AcroDB():
         Item["image_s3_url"] = URL
         return self.put_item(Item=Item, force=True)
 
-    def insert_media(self, mvtId: str, media_path: str):
+    def insert_media(self, mvtId: str, media_path: str) -> bool:
         # mvtId type check
         if not isinstance(mvtId, str):
             mvtId = str(mvtId)
 
-        # Download media from media_path
-        ...
+        # media_path check
+        if not os.path.exists(media_path):
+            print(f"'{media_path}' does not exist.")
+            return False
+
+        # Get extension
+        ext = self.__get_file_extension(media_path)
 
         # Upload media to S3 Bucket
-        ...
-
-        pass
+        try:
+            self.__s3_client.upload_file(
+                Filename=media_path, 
+                Bucket=self.__bucket, 
+                Key=f"{self.__table.table_name}/mvtId-{mvtId}{ext}"
+                )
+        except ClientError as e:
+            print(e)
+            return False
+        return True
 
     def insert_media_and_s3_url(self, mvtId: str, media_path: str):
-        response_1 = self.insert_media(self, mvtId=mvtId, media_path=media_path)
-        #response_2 = self.insert_s3_url(self, mvtId=mvtId)
-        pass
+        response_1 = self.insert_media(mvtId=mvtId, media_path=media_path)
+        if not response_1:
+            return None
+        ext = self.__get_file_extension(media_path)
+        response_2 = self.insert_s3_url(mvtId=mvtId, ext=ext)
+        return response_2
+
+    # Miscellaneous
+    ################################
+    def __get_file_extension(self, filename):
+        # Extracts the file extension using os.path.splitext
+        _, extension = os.path.splitext(filename)
+        return extension
 
 def main():
     print("Script for AcroDB class.")
