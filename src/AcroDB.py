@@ -140,6 +140,11 @@ class AcroDB():
         response_2 = self.__insert_s3_url(mvtId=mvtId, ext=ext)
         return response_2
 
+    # Query
+    ################################
+    def query(query: str):
+        pass
+
     # Miscellaneous
     ################################
     def __get_file_extension(self, filename):
