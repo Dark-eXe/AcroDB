@@ -95,7 +95,7 @@ class AcroDB():
             ExpiresIn=ExpiresIn
         )
 
-    def insert_s3_url(self, mvtId: str, ext: str) -> dict:
+    def __insert_s3_url(self, mvtId: str, ext: str) -> dict:
         # Define parameters
         Key = f"{self.__table_name}/mvtId-{mvtId}{ext}"
         Item = self.get_item(mvtId=mvtId)
@@ -107,7 +107,7 @@ class AcroDB():
         Item["image_s3_url"] = URL
         return self.put_item(Item=Item, force=True)
 
-    def insert_media(self, mvtId: str, media_path: str) -> bool:
+    def __insert_media(self, mvtId: str, media_path: str) -> bool:
         # mvtId type check
         if not isinstance(mvtId, str):
             mvtId = str(mvtId)
@@ -133,11 +133,11 @@ class AcroDB():
         return True
 
     def insert_media_and_s3_url(self, mvtId: str, media_path: str):
-        response_1 = self.insert_media(mvtId=mvtId, media_path=media_path)
+        response_1 = self.__insert_media(mvtId=mvtId, media_path=media_path)
         if not response_1:
             return None
         ext = self.__get_file_extension(media_path)
-        response_2 = self.insert_s3_url(mvtId=mvtId, ext=ext)
+        response_2 = self.__insert_s3_url(mvtId=mvtId, ext=ext)
         return response_2
 
     # Miscellaneous
