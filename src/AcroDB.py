@@ -145,7 +145,7 @@ class AcroDB():
     ################################
     def query(
         self,
-        IndexName: str="mvtId", Limit: int=10, Select: str="ALL_ATTRIBUTES",
+        IndexName: str="mvtId", Limit: int=5, Select: str="ALL_ATTRIBUTES",
         ProjectionExpression: str="", FilterExpression: str="",
         ExpressionAttributeNames: dict={}, ExpressionAttributeValues: dict={}
     ):
