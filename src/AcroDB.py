@@ -145,17 +145,10 @@ class AcroDB():
     def query(
         self,
         IndexName: str="", Limit: int=100, Select: str="ALL_ATTRIBUTES",
-        ProjectionExpression: str="", FilterExpression="",
-        ExpressionAttributeNames: dict={}, ExpressionAttributeValues: dict={}
+        FilterExpression="",
     ):
         if IndexName:
             print("Query: IndexName not yet supported.")
-        if ProjectionExpression:
-            print("Query: ProjectionExpression not yet supported.")
-        if ExpressionAttributeNames:
-            print("Query: ExpressionAttributeNames not yet supported.")
-        if ExpressionAttributeValues:
-            print("Query: ExpressionAttributeValues not yet supported.")
 
         if FilterExpression:
             return self.__table.scan(
