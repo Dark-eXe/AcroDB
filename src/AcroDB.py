@@ -144,19 +144,16 @@ class AcroDB():
     # Query
     ################################
     def query(
-        IndexName: str=None, Limit: int=100, Select: str="ALL_ATTRIBUTES",
+        self,
+        IndexName: str="mvtId", Limit: int=10, Select: str="ALL_ATTRIBUTES",
         ProjectionExpression: str="", FilterExpression: str="",
         ExpressionAttributeNames: dict={}, ExpressionAttributeValues: dict={}
     ):
         return self.__db_client.scan(
             TableName=self.__table_name,
-            IndexName=IndexName,
-            Limit=Limit,
-            ProjectionExpression=ProjectionExpression,
-            FilterExpression=FilterExpression,
-            ExpressionAttributeNames=ExpressionAttributeNames,
-            ExpressionAttributeValues=ExpressionAttributeValues
+            Limit=Limit
         )
+        
 
     # Miscellaneous
     ################################
