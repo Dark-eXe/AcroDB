@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 class AcroDB():
     # Constructor
     ################################
-    def __init__(self, table_name: str, bucket_name: str = None):
+    def __init__(self, table_name: str, bucket_name: str=None):
         self.__table_name = table_name
         self.__table = boto3.resource("dynamodb").Table(table_name)
         self.__bucket = bucket_name
@@ -48,7 +48,7 @@ class AcroDB():
             
         return response["Item"]
 
-    def put_item(self, Item: dict, force: bool = False):
+    def put_item(self, Item: dict, force: bool=False):
         # Type checking -> mvtId: str, value: Decimal as supported by AWS
         if not isinstance(Item["mvtId"], str):
             Item["mvtId"] = str(Item["mvtId"])
@@ -83,7 +83,7 @@ class AcroDB():
 
     # S3 Bucket Media URL Interactions
     ################################
-    def __generate_s3_url(self, Bucket: str, Key: str, ExpiresIn: int = 604800) -> str:
+    def __generate_s3_url(self, Bucket: str, Key: str, ExpiresIn: int=604800) -> str:
         # Define parameters for generate_presigned_url
         ClientMethod = 'get_object'
         Params = {'Bucket': self.__bucket, 'Key': Key}
@@ -139,6 +139,27 @@ class AcroDB():
         ext = self.__get_file_extension(media_path)
         response_2 = self.__insert_s3_url(mvtId=mvtId, ext=ext)
         return response_2
+
+    # Query
+    ################################
+    def query(
+        self,
+        IndexName: str="", Limit: int=100, Select: str="ALL_ATTRIBUTES",
+        FilterExpression="",
+    ):
+        if IndexName:
+            print("Query: IndexName not yet supported.")
+
+        if FilterExpression:
+            return self.__table.scan(
+                Limit=Limit,
+                FilterExpression=FilterExpression
+        )
+        
+        return self.__table.scan(
+            Limit=Limit
+        )
+        
 
     # Miscellaneous
     ################################
