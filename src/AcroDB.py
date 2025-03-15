@@ -46,7 +46,9 @@ class AcroDB():
     def __get_attributes(self) -> set:
         """Get set of attributes in table."""
         Item = self.get_item(mvtId='1')
-        if 'key_error' in Item.keys() or 'client_error' in Item.keys():
+        if 'key_error' in Item.keys():
+            return set()
+        if 'client_error' in Item.keys():
             raise Exception(f"Error retrieving attributes from table:", Item)
         return set(Item.keys())
     
