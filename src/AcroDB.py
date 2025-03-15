@@ -49,7 +49,7 @@ class AcroDB():
         if 'key_error' in Item.keys():
             return set()
         if 'client_error' in Item.keys():
-            raise Exception(f"Error retrieving attributes from table:", Item)
+            raise Exception("Error retrieving attributes from table:", Item)
         return set(Item.keys())
     
     def __put_item(self, Item: dict, force: bool=False) -> dict:
