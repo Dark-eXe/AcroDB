@@ -43,36 +43,16 @@ class AcroDB():
 
     # DB Interactions
     ################################
-    def get_item(self, mvtId: str) -> dict:
-        """
-        Gets item from DynamoDB table.
-
-        Args:
-            mvtId (str): primary key
-
-        Returns:
-            response["Item"] (dict): query return item from boto3
-        """
-        # mvtId type check
-        if not isinstance(mvtId, str):
-            mvtId = str(mvtId)
+    def __get_attributes(self) -> set:
+        """Get set of attributes in table."""
+        if self.__table.item_count == 0:
+            return set()
+        Item = self.get_item(mvtId='1')
+        if 'key_error' in Item.keys() or 'client_error' in Item.keys():
+            raise Exception(f"Error retrieving attributes from table:", Item)
+        return set(Item.keys())
     
-        # Invoke get_item
-        Key = {"mvtId": mvtId}
-        try:
-            response = self.__table.get_item(Key=Key)
-        except ClientError as error:
-            print("")
-            print(error)
-            print("")
-            return {'client_error': error}
-            
-        try:
-            return response["Item"]
-        except KeyError as error:
-            return {'key_error': f"mvtId '{mvtId}' not in table"}
-
-    def put_item(self, Item: dict, force: bool=False) -> dict:
+    def __put_item(self, Item: dict, force: bool=False) -> dict:
         """
         Puts item in DynamoDB table.
         
@@ -102,15 +82,34 @@ class AcroDB():
         message = f"mvtId {Item['mvtId']} successfully inserted to {self.__table_name}"
         return {"message": message}
     
-    def __get_attributes(self) -> set:
-        """Get set of attributes in table."""
-        if self.__table.item_count == 0:
-            return set()
-        Item = self.get_item(mvtId='1')
-        if 'key_error' in Item.keys() or 'client_error' in Item.keys():
-            raise Exception(f"Error retrieving attributes from table:", Item)
-        return set(Item.keys())
+    def get_item(self, mvtId: str) -> dict:
+        """
+        Gets item from DynamoDB table.
+
+        Args:
+            mvtId (str): primary key
+
+        Returns:
+            response["Item"] (dict): query return item from boto3
+        """
+        # mvtId type check
+        if not isinstance(mvtId, str):
+            mvtId = str(mvtId)
     
+        # Invoke get_item
+        Key = {"mvtId": mvtId}
+        try:
+            response = self.__table.get_item(Key=Key)
+        except ClientError as error:
+            print("")
+            print(error)
+            print("")
+            return {'client_error': error}
+            
+        try:
+            return response["Item"]
+        except KeyError as error:
+            return {'key_error': f"mvtId '{mvtId}' not in table"}
 
     def import_xlsx(self, xlsx_path: str) -> dict:
         """
@@ -134,7 +133,7 @@ class AcroDB():
 
         # Import values by row, invoking insert_value
         for _, row in df.iterrows():
-            self.put_item(Item=dict(row))
+            self.__put_item(Item=dict(row))
     
         message = f"{xlsx_path} successfully imported to {self.__table_name}"
         return {"message": message}
@@ -165,7 +164,7 @@ class AcroDB():
 
         # Set URL
         Item["image_s3_url"] = URL
-        return self.put_item(Item=Item, force=True)
+        return self.__put_item(Item=Item, force=True)
 
     def __insert_media(self, mvtId: str, media_path: str) -> bool:
         """Uploads local multimedia into S3 multimedia bucket."""
@@ -193,7 +192,7 @@ class AcroDB():
             return False
         return True
 
-    def insert_media_and_s3_url(self, mvtId: str, media_path: str) -> dict:
+    def insert_media_and_url(self, mvtId: str, media_path: str) -> dict:
         """
         Uploads local multimedia into S3 bucket and corresponding Item in DynamoDB table.
         
