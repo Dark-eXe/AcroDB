@@ -65,9 +65,12 @@ class AcroDB():
             print("")
             print(error)
             print("")
-            return None
+            return {'client_error': error}
             
-        return response["Item"]
+        try:
+            return response["Item"]
+        except KeyError as error:
+            return {'key_error': f"mvtId '{mvtId}' not in table"}
 
     def put_item(self, Item: dict, force: bool=False) -> dict:
         """
