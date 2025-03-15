@@ -101,7 +101,16 @@ class AcroDB():
 
         message = f"mvtId {Item['mvtId']} successfully inserted to {self.__table_name}"
         return {"message": message}
-        
+    
+    def __get_attributes(self) -> set:
+        """Get set of attributes in table."""
+        if self.__table.item_count == 0:
+            return []
+        Item = self.get_item(mvtId='1')
+        if 'key_error' in Item.keys() or 'client_error' in Item.keys():
+            raise Exception(f"Error retrieving attributes from table:", Item)
+        return set(Item.keys())
+    
 
     def import_xlsx(self, xlsx_path: str) -> dict:
         """
@@ -116,6 +125,10 @@ class AcroDB():
         # Read xlsx as df
         df = pd.read_excel(xlsx_path)
         df = df.replace({np.nan: None})
+
+        # Check columns of xlsx workbook
+        if set(df.columns) != self.__get_attributes():
+            return {"error_message": "xlsx columns do not align with table's"}
 
         # Import values by row, invoking insert_value
         for _, row in df.iterrows():
@@ -203,7 +216,8 @@ class AcroDB():
             FilterExpression="",):
         """
         Direct query to DynamoDB table using boto3 scan() method.
-        
+        Boto3 Documentation: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/customizations/dynamodb.html
+
         Args:
             IndexName (str): GSI for table (NOT YET SUPPORTED)
             Limit (int): query search limit (default 100)
