@@ -1,4 +1,4 @@
-from src import AcroDB
+from AcroDB import AcroDB
 import boto3
 import os
 import numpy as np
