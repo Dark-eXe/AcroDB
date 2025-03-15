@@ -45,8 +45,6 @@ class AcroDB():
     ################################
     def __get_attributes(self) -> set:
         """Get set of attributes in table."""
-        if self.__table.item_count == 0:
-            return set()
         Item = self.get_item(mvtId='1')
         if 'key_error' in Item.keys() or 'client_error' in Item.keys():
             raise Exception(f"Error retrieving attributes from table:", Item)
@@ -66,8 +64,9 @@ class AcroDB():
         # Type checking -> mvtId: str, value: Decimal as supported by AWS
         if not isinstance(Item["mvtId"], str):
             Item["mvtId"] = str(Item["mvtId"])
-        if not isinstance(Item["value"], Decimal):
-            Item["value"] = Decimal(str(Item["value"]))
+        if "value" in Item.keys():
+            if not isinstance(Item["value"], Decimal):
+                Item["value"] = Decimal(str(Item["value"]))
 
         # Invoke put_item
         if force: # replaces if mvtId already exists
