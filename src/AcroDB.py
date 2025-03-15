@@ -105,7 +105,7 @@ class AcroDB():
     def __get_attributes(self) -> set:
         """Get set of attributes in table."""
         if self.__table.item_count == 0:
-            return []
+            return set()
         Item = self.get_item(mvtId='1')
         if 'key_error' in Item.keys() or 'client_error' in Item.keys():
             raise Exception(f"Error retrieving attributes from table:", Item)
@@ -127,8 +127,10 @@ class AcroDB():
         df = df.replace({np.nan: None})
 
         # Check columns of xlsx workbook
-        if set(df.columns) != self.__get_attributes():
-            return {"error_message": "xlsx columns do not align with table's"}
+        table_attributes: set = self.__get_attributes()
+        if table_attributes: # items in table exits -> check attribute alignment
+            if set(df.columns) != table_attributes:
+                return {"error_message": "xlsx columns do not align with table's"}
 
         # Import values by row, invoking insert_value
         for _, row in df.iterrows():
