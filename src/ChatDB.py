@@ -1,10 +1,4 @@
 from AcroDB import AcroDB
-import boto3
-import os
-import numpy as np
-import pandas as pd
-from decimal import Decimal
-from botocore.exceptions import ClientError
 
 import openai
 
@@ -34,7 +28,7 @@ class ChatDB():
     # Chat
     ################################
     def get_chat(self) -> str:
-        pass
+        return str(input("Enter query: "))
 
     # Translate chat to FilterExpression using OpenAI
     def translate_chat(self, chat: str=""):
@@ -43,6 +37,15 @@ class ChatDB():
 def main():
     print("Script for ChatDB class.")
     print("")
+    table_name: str = "MAG_Code-of-Points"
+    bucket_name: str = "dsci551-acrobucket"
+    acrodb_list: list[AcroDB] = [AcroDB(table_name=table_name, bucket_name=bucket_name)]
+    print("TEST")
+    print("-" * 50)
+    print("acrodb_list:", acrodb_list)
+    myChat = ChatDB(acrodb_list=acrodb_list)
+    chat = myChat.get_chat()
+    print("Your chat:", chat)
 
 if __name__ == "__main__":
     main()
