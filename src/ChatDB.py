@@ -1,4 +1,5 @@
 from AcroDB import AcroDB
+import os
 
 import openai
 
@@ -64,20 +65,25 @@ class ChatDB():
         Returns:
             expression (FilterExpression): OpenAI-translated FilterExpression passed into AcroDB.query()
         """
-        pass
+        return self.__api_key
 
 def main():
     print("Script for ChatDB class.")
     print("")
-    table_name: str = "MAG_Code-of-Points"
+    table_name: str = "Parkourpedia"
     bucket_name: str = "dsci551-acrobucket"
     acrodb_list: list[AcroDB] = [AcroDB(table_name=table_name, bucket_name=bucket_name)]
+
     print("TEST")
     print("-" * 50)
     print("acrodb_list:", acrodb_list)
+
     myChat = ChatDB(acrodb_list=acrodb_list)
+    myChat.set_api_key(API_KEY=open("secrets/API_KEY" if os.path.basename(os.getcwd()) == "AcroDB" else "../secrets/API_KEY").read())
+    
     chat = myChat.get_chat()
     FilterExpression: any = myChat.translate_chat(chat)
+    print(FilterExpression)
     
 
 if __name__ == "__main__":
