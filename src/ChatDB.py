@@ -6,7 +6,7 @@ class ChatDB():
     # Constructor
     ################################
     """Chat query. Interfaces with AcroDB instance(s)."""
-    def __init__(self, acrodb_list: list[AcroDB]=[]):
+    def __init__(self, acrodb_list: list[AcroDB]=[], API_KEY: str=""):
         """
         Initialize ChatDB instance.
 
@@ -15,6 +15,16 @@ class ChatDB():
         """
         self.__acrodb_list = acrodb_list
         self.__acrodb_count = len(self.__acrodb_list)
+        self.__api_key = API_KEY
+        if self.__api_key:
+            openai.api_key = self.__api_key
+
+    # OpenAI API Key
+    ################################
+    def set_api_key(self, API_KEY: str):
+        """Sets new value for API_KEY"""
+        self.__api_key = API_KEY
+        openai.api_key = self.__api_key
 
     # Getters
     ################################
