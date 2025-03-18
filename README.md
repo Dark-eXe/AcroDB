@@ -6,7 +6,7 @@ Chat-queried NoSQL database for gymnastics & parkour skills using AWS DynamoDB a
 - *TBD*: Web UI or GUI, currently CLI
 ## Database Contents
 Requires AWS client permissions for access (closed to public for now).<br><br>
-DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary (to be joined)
+DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary
 > partition key: 'mvtId'
 
 S3: Multimedia for movement demonstrations
