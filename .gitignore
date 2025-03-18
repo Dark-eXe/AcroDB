@@ -1,8 +1,12 @@
+# Secrets
+secrets
+
 # Data: local, xlsx workbooks
 data
 
-# Project guideline
+# Project guideline & progress report
 Project_Guideline.pdf
+AcroDB_Progress.pdf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

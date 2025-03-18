@@ -1,2 +1,1 @@
-__all__ = ["AcroDB"]
-from .AcroDB import AcroDB
+__all__ = ["AcroDB", "ChatDB"]
