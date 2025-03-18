@@ -1,4 +1,7 @@
-from AcroDB import AcroDB
+try:
+    from .AcroDB import AcroDB
+except ImportError:
+    from AcroDB import AcroDB
 import os
 
 import boto3
@@ -183,22 +186,6 @@ class ChatDB():
 
 def main():
     print("Script for ChatDB class.")
-    print("")
-    table_name: str = "Parkourpedia"
-    bucket_name: str = "dsci551-acrobucket"
-    acrodb_list: list[AcroDB] = [AcroDB(table_name=table_name, bucket_name=bucket_name)]
-
-    print("TEST")
-    print("-" * 50)
-    myChat = ChatDB(acrodb_list=acrodb_list)
-    print("Parkourpedia added!")
-    myChat.add_db(AcroDB(table_name="MAG_Code-of-Points", bucket_name="dsci551-acrobucket"))
-    print("MAG_Code-of-Points added!")
-    if myChat.set_api_key(API_KEY=open("secrets/API_KEY" if os.path.basename(os.getcwd()) == "AcroDB" else "../secrets/API_KEY").read()):
-        print("OpenAI client setup successful!")
-    
-    print("")
-    myChat.loop()
     print("")
     
 
