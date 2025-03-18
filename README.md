@@ -11,3 +11,8 @@ DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour diction
 
 S3: Multimedia for movement demonstrations
 > key: '<dynamodb_table>/mvtId-\<mvtId\>.\<multimedia_extension\>'
+
+## Progress
+#### Command-Line Interface
+Uses ChatDB.loop()
+![image](https://github.com/user-attachments/assets/dcad7bb3-b835-4881-9680-c821f3d8d694)
