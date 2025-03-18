@@ -14,5 +14,5 @@ S3: Multimedia for movement demonstrations
 
 ## 👷‍♂️ Progress 👷‍♀️
 #### Command-Line Interface
-Uses ChatDB.loop()
+Uses ```ChatDB.loop()```
 ![image](https://github.com/user-attachments/assets/dcad7bb3-b835-4881-9680-c821f3d8d694)
