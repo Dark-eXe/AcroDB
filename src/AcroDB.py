@@ -210,35 +210,6 @@ class AcroDB():
         response_2 = self.__insert_s3_url(mvtId=mvtId, ext=ext)
         return response_2
 
-    # Query
-    ################################
-    def query(
-            self,
-            IndexName: str="", Limit: int=100, Select: str="ALL_ATTRIBUTES",
-            FilterExpression="",):
-        """
-        Direct query to DynamoDB table using boto3 scan() method.
-        Boto3 Documentation: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/customizations/dynamodb.html
-
-        Args:
-            IndexName (str): GSI for table (NOT YET SUPPORTED)
-            Limit (int): query search limit (default 100)
-            Select (str): for filter use with GSI (NOT YET SUPPORTED)
-            FilterExpression (FilterExpression): boto3 query expression"""
-        if IndexName:
-            print("Query: IndexName not yet supported.")
-
-        if FilterExpression:
-            return self.__table.scan(
-                Limit=Limit,
-                FilterExpression=FilterExpression
-        )
-        
-        return self.__table.scan(
-            Limit=Limit
-        )
-        
-
     # Miscellaneous
     ################################
     def __get_file_extension(self, filename):

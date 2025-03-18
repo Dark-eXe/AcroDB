@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
-from src import AcroDB
+from src.AcroDB import AcroDB
 
 def test_constructor(mock_acrodb):
     assert mock_acrodb is not None
@@ -32,10 +32,6 @@ def test_setters(mock_acrodb, new_table_name, new_bucket_name):
 
 def test_get_item(mock_acrodb):
     assert mock_acrodb.get_item("test_mvtId")["mvtId"] == "test_mvtId"
-
-def test_put_item(mock_acrodb, table_name):
-    message = f"mvtId test_mvtId successfully inserted to {table_name}"
-    assert mock_acrodb.put_item(Item={"mvtId": "test_mvtId"}, force=False)["message"] == message
 
 def test_s3url_insert(mock_acrodb, table_name):
     message = f"mvtId test_mvtId successfully inserted to {table_name}"

@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from src import AcroDB
+from src.AcroDB import AcroDB
 
 @pytest.fixture
 def table_name():
@@ -28,7 +28,6 @@ def mock_acrodb(table_name, bucket_name):
         mock_acro.get_table = MagicMock(return_value=MagicMock(table_name=table_name))
         mock_acro.get_bucket = MagicMock(return_value=bucket_name)
         mock_acro.get_item = MagicMock(return_value={"mvtId": "test_mvtId"})
-        mock_acro.put_item = MagicMock(return_value={"message": f"mvtId test_mvtId successfully inserted to {table_name}"})
         mock_acro.insert_s3_url = MagicMock(return_value={"message": f"mvtId test_mvtId successfully inserted to {table_name}"})
 
         yield mock_acro

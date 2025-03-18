@@ -22,7 +22,7 @@ class ChatDB():
         self.__acrodb_count = len(self.__acrodb_list)
         self.__acrodb_ref = {}
         for acrodb in self.__acrodb_list:
-            self.__acrodb_ref[acrodb.get_table().table_name] = acrodb
+            self.__acrodb_ref[acrodb.get_table().table_name] = acrodb.get_table()
 
         self.__client = None
         if self.set_api_key(API_KEY=API_KEY) and verbose:
