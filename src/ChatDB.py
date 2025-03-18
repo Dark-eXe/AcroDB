@@ -3,6 +3,7 @@ import os
 
 import boto3
 from boto3.dynamodb.conditions import Attr, Key
+from botocore.exceptions import ClientError
 from openai import OpenAI
 
 class ChatDB():
@@ -52,7 +53,7 @@ class ChatDB():
     def add_db(self, new_db: AcroDB):
         """Add AcroDB instance to interface with."""
         self.__acrodb_list.append(new_db)
-        self.__acrodb_ref[new_db.get_table().table_name] = new_db
+        self.__acrodb_ref[new_db.get_table().table_name] = new_db.get_table()
 
     def remove_db(self, db_name: str):
         """Remove AcroDB instance to interface with."""
@@ -75,7 +76,7 @@ class ChatDB():
 
     def translate_chat(self, chat: str="") -> str:
         """
-        Translate chat to FilterExpression using OpenAI.
+        Translate NL chat to Boto3 table scan or query expression using OpenAI.
 
         Boto3 Documentation: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/customizations/dynamodb.html
 
@@ -100,21 +101,23 @@ class ChatDB():
         9. In gymnastics, difficulty 'A' or value '0.1' is easy, difficulty 'B' or value '0.2' is intermediate, difficulty 'C' or value '0.3' is difficult, and so on until difficulty 'J' or value '1.0' being the most difficult and rarest
         10. Attributes in "Parkourpedia": 'group', 'name', 'difficulty', 'description', 'image_s3_url'
         11. 'group' value possibilites in "Parkourpedia": 'Wall', 'Vault', 'Landing', 'Bar', 'Flip'
-        12. 'difficult' value possibilities in "Parkourpedia": 'Situational', 'Beginner', 'Intermediate', 'Advanced'
+        12. 'difficulty' value possibilities in "Parkourpedia": 'Situational', 'Beginner', 'Intermediate', 'Advanced'
         13. Attributes in MAG/WAG: 'difficulty', 'event', 'group', 'name', 'value', 'image_s3_url'
         14. 'event' value possibilities in MAG: 'MAG Floor', 'MAG Pommel Horse', 'MAG Rings'
         15. Output None for non-possibilities.
+        16. For possibilities, output prefix "acrodb_ref" instead of "self.__acrodb_ref" for pipelining reasons.
+        17. When using ProjectionExpression, reserved keywords must be aliased with expression attribute names.
         
         Example inputs and outputs:
 
         Input: "Find all beginner parkour skills."
-        Output: self.__acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('age').gt(25))
+        Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('age').gt(25))
 
         Input: "Get me skill ID 1 from the Men's Gymnastics table."
-        Output: self.__acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('mvtId').eq('1'))
+        Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('mvtId').eq('1'))
 
         Input: "Show me difficult floor skills in Men's Gymnastics."
-        Output: self.__acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('difficulty').gte('C'))
+        Output: acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('difficulty').gte('C'))
 
         Input: "Show me some Women's Gymnastics skills."
         Output: None
@@ -123,7 +126,7 @@ class ChatDB():
         Output: None
 
         Input: "What are some parkour wall skill names."
-        Output: self.__acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('group').eq('Wall'), ProjectionExpression="name")
+        Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('group').eq('Wall'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})
 
         Now convert this: "{}"
         """
@@ -136,6 +139,45 @@ class ChatDB():
         )
 
         return response.choices[0].message.content
+    
+    def exec_response(self, response: str="") -> any:
+        """Execute chat-queried response using eval()."""
+        try:
+            return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr})
+        except SyntaxError as error:
+            return f"Syntax Error: {error}"
+        except AttributeError as error:
+            return f"Attribute Error: {error}"
+        except NameError as error:
+            return f"Name Error: {error}"
+        except ClientError as error:
+            return f"Client Error: {error}"
+        
+    def print_exec_items(self, exec_response: any=None) -> None:
+        """Display exec_response so that only Items are displayed in tabular form."""
+        if not exec_response:
+            print("No results returned.")
+            return
+        if not isinstance(exec_response, dict): # probably an excepted error
+            print(exec_response)
+            return
+        if "Items" not in exec_response.keys():
+            print("Error: exec_response does not have 'Items' object.")
+            return
+        for Item in exec_response["Items"]:
+            print(Item)
+
+    # Pipeline
+    ################################
+    def loop(self):
+        """Main execution loop for CLI chat-query."""
+        while True:
+            print("--- (q)uit to exit chat ---")
+            chat = self.get_chat()
+            if chat.lower() == 'q':
+                break
+            self.print_exec_items(self.exec_response(self.translate_chat(chat)))
+            print("")
 
 
 
@@ -156,12 +198,7 @@ def main():
         print("OpenAI client setup successful!")
     
     print("")
-    chat = myChat.get_chat()
-    print("")
-    print("RESPONSE")
-    print("-" * 25)
-    response = myChat.translate_chat(chat)
-    print(response)
+    myChat.loop()
     print("")
     
 
