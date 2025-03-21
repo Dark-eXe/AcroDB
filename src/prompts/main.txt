@@ -30,6 +30,9 @@ Output: ", ".join(list(acrodb_ref.keys()))
 Input: "Show me the parkour table in detail."
 Output: boto3.client('dynamodb').describe_table(TableName='Parkourpedia')
 
+Input: "How many moves are listed in MAG?"
+Output: acrodb_ref["MAG_Code-of-Points"].scan(Select='COUNT')['Count']
+
 Input: "Get me skill ID 1 from the Men's Gymnastics table."
 Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('mvtId').eq('1'))
 
