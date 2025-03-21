@@ -22,7 +22,7 @@ Rules:
 Example inputs and outputs:
 
 Input: "Find all beginner parkour skills."
-Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('age').gt(25))
+Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('difficulty').eq('Beginner'))
 
 Input: "Get me skill ID 1 from the Men's Gymnastics table."
 Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('mvtId').eq('1'))
@@ -47,6 +47,9 @@ Output: acrodb_ref["MAG_Code-of-Points"].put_item(Item={{'mvtId':'1'}}, Conditio
 
 Input: "Add mvt 1 to Men's Gymnastics with description 'this is a front handspring'"
 Output: None
+
+Input: "Update mvt 10 in parkour's description to be 'standing back tuck.'"
+Output: acrodb_ref["Parkourpedia"].update_item(Key={{'mvtId': '10'}}, UpdateExpression="SET description = :description", ExpressionAttributeValues={{':description': 'standing back tuck.'}}, ConditionExpression="attribute_exists(mvtId)")
 
 Input: "Add mvt 1 to Men's Gymnastics with a value of 0.1, difficulty of A, a floor skill, group of acro elements forward, name as 'Forward handspring or flyspring.', and s3_url of 'https://dsci551-acrobucket.s3.amazonaws.com/MAG_Code-of-Points/mvtId-1.png?AWSAccessKeyId=AKIATTSKFQGHV63LIAPX&Signature=UbXtWAMjEKLshUopHfqqyy%2Ba7pg%3D&Expires=1742639229'"
 Output: acrodb_ref["MAG_Code-of-Points"].put_item(Item={{'value': Decimal('0.1'), 'event': 'MAG Floor', 'mvtId': '1', 'image_s3_url': 'https://dsci551-acrobucket.s3.amazonaws.com/MAG_Code-of-Points/mvtId-1.png?AWSAccessKeyId=AKIATTSKFQGHV63LIAPX&Signature=UbXtWAMjEKLshUopHfqqyy%2Ba7pg%3D&Expires=1742639229', 'group': 'Acrobatic elements forward', 'difficulty': 'A', 'name': 'Forward handspring or flyspring.'}}, ConditionExpression='attribute_not_exists(mvtId))
