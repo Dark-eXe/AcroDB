@@ -18,6 +18,9 @@ Rules:
 16. For possibilities, output prefix "acrodb_ref" instead of "self.__acrodb_ref" for pipelining reasons.
 17. When using ProjectionExpression, reserved keywords must be aliased with expression attribute names.
 18. To put, delete, or update table items, use partition key "mvtId".
+19. No sort keys have been implemented yet, so return an appropriate message if sorting is queried.
+20. Same as rule 19 but with grouping.
+21. Queries for multiple tables can be combined by adding the list of returned items.
 
 Example inputs and outputs:
 
@@ -37,7 +40,22 @@ Input: "Get me skill ID 1 from the Men's Gymnastics table."
 Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('mvtId').eq('1'))
 
 Input: "Show me difficult floor skills in Men's Gymnastics."
-Output: acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('difficulty').gte('C'))
+Output: acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('difficulty').gte('C') & Attr('event').eq('MAG Floor'))
+
+Input: "Show me intermediate skills in Men's Gymnastics."
+Output: acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('value').eq(0.2))
+
+Input: "Show me rings skills in ascending order."
+Output: "Sort key not yet supported for MAG_Code-of-Points."
+
+Input: "Show me parkour skills grouped by difficulty."
+Output: "DynamoDB does not support native grouping. Suggestion: fetch groups via filters and aggregate."
+
+Input: "Show me all acrobatic skills."
+Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan()['Items'] + acrodb_ref["Parkourpedia].scan()['Items']}}
+
+Input: "Show me the names of difficult acrobatic skills in Parkour and men's gymnastics."
+Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('difficulty').gte('C'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})['Items'] + acrodb_ref["Parkourpedia].scan(FilterExpression=Attr('difficulty').eq('Advanced'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})['Items']}}
 
 Input: "Show me some Women's Gymnastics skills."
 Output: None
