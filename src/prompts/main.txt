@@ -24,6 +24,9 @@ Example inputs and outputs:
 Input: "Find all beginner parkour skills."
 Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('difficulty').eq('Beginner'))
 
+Input: "Show me tables."
+Output: ", ".join(list(acrodb_ref.keys()))
+
 Input: "Get me skill ID 1 from the Men's Gymnastics table."
 Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('mvtId').eq('1'))
 

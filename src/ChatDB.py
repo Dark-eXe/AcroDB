@@ -154,7 +154,7 @@ class ChatDB():
         if not exec_response:
             print("No results returned.")
             return
-        if not isinstance(exec_response, dict): # probably an excepted error
+        if not isinstance(exec_response, dict): # probably an excepted error, or table list
             print(exec_response)
             return
         if "Items" not in exec_response.keys():
