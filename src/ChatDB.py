@@ -9,11 +9,13 @@ from boto3.dynamodb.conditions import Attr, Key
 from botocore.exceptions import ClientError
 from openai import OpenAI
 
+from decimal import Decimal
+
 class ChatDB():
     # Constructor
     ################################
     """Chat query. Interfaces with AcroDB instance(s)."""
-    def __init__(self, acrodb_list: list[AcroDB]=[], API_KEY: str="", verbose: bool=False):
+    def __init__(self, acrodb_list: list[AcroDB]=[], API_KEY: str="", verbose: bool=False, prompt_path: str=""):
         """
         Initialize ChatDB instance.
 
@@ -33,6 +35,15 @@ class ChatDB():
             print("ChatDB client successfully set.")
 
         self.__chat_log = []
+        self.__prompt = ""
+        if prompt_path:
+            if not os.path.exists(prompt_path):
+                prompt_path = "../" + prompt_path
+            try:
+                with open(prompt_path, 'r') as f:
+                    self.__prompt = f.read()
+            except FileNotFoundError as error:
+                print(f"Prompt file not found: {error}")
 
     # OpenAI API Key
     ################################
@@ -42,6 +53,19 @@ class ChatDB():
             self.__client = OpenAI(api_key=API_KEY)
             return True
         return False
+    
+    # OpenAI Prompt
+    ################################
+    def set_prompt(self, prompt_path: str="") -> bool:
+        """Sets new prompt for chat with reference path."""
+        try:
+            with open(prompt_path, 'r') as f:
+                self.__prompt = f.read()
+            return True
+        except FileNotFoundError as error:
+            print(f"Prompt file not found: {error}")
+            return False
+
 
     # Getters
     ################################
@@ -83,7 +107,7 @@ class ChatDB():
         """Get user-input query chat in natural language."""
         return str(input("Enter query: "))
 
-    def translate_chat(self, chat: str="", prompt_path: str=os.path.join("src/prompts/main.txt")) -> str:
+    def translate_chat(self, chat: str="") -> str:
         """
         Translate NL chat to Boto3 table scan or query expression using OpenAI.
 
@@ -95,17 +119,8 @@ class ChatDB():
         Returns:
             response (str): OpenAI-translated executable (or None) referencing self.__acrodb_ref
         """
-        if not os.path.exists(prompt_path):
-            prompt_path = "../" + prompt_path
-        try:
-            with open(prompt_path, 'r') as f:
-                prompt = f.read()
-        except FileNotFoundError as error:
-            print(f"Prompt file not found: {error}")
-            return "None"
-
         query = chat
-        formatted_prompt = prompt.format(query)
+        formatted_prompt = self.__prompt.format(query)
         sys_message = {"role": "system", "content": formatted_prompt}
         self.__chat_log.append(sys_message)
 
@@ -121,14 +136,17 @@ class ChatDB():
     def exec_response(self, response: str="") -> any:
         """Execute chat-queried response using eval()."""
         try:
-            return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr})
+            return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr, "Decimal": Decimal})
         except SyntaxError as error:
+            print(f"response: {response}")
             return f"Syntax Error: {error}"
         except AttributeError as error:
             return f"Attribute Error: {error}"
         except NameError as error:
             return f"Name Error: {error}"
         except ClientError as error:
+            if error.response['Error']['Code'] == 'ConditionalCheckFailedException':
+                return("Invalid data modification.")
             return f"Client Error: {error}"
         
     def print_exec_items(self, exec_response: any=None) -> None:
@@ -140,7 +158,7 @@ class ChatDB():
             print(exec_response)
             return
         if "Items" not in exec_response.keys():
-            print("Error: exec_response does not have 'Items' object.")
+            print('200: Success' if exec_response['ResponseMetadata']['HTTPStatusCode'] == 200 else "Request unsuccessful")
             return
         for Item in exec_response["Items"]:
             print(Item)

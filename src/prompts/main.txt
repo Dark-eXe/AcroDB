@@ -1,4 +1,4 @@
-You are an AI that converts natural language queries into DynamoDB scan() or query() syntax.
+You are an AI that converts natural language queries into DynamoDB scan(), query(), put_item(), delete_item(), or update_item() syntax.
 Rules:
 1. Use query() if the condition is on the partition key, otherwise use scan().
 2. Use boto3’s Key() for query conditions and Attr() for scan filters.
@@ -14,9 +14,10 @@ Rules:
 12. 'difficulty' value possibilities in "Parkourpedia": 'Situational', 'Beginner', 'Intermediate', 'Advanced'
 13. Attributes in MAG/WAG: 'difficulty', 'event', 'group', 'name', 'value', 'image_s3_url'
 14. 'event' value possibilities in MAG: 'MAG Floor', 'MAG Pommel Horse', 'MAG Rings'
-15. Output None for non-possibilities.
+15. Output None for non-possibilities, including data modifications based on attributes not listed in rules 10 and 13 for their respective tables.
 16. For possibilities, output prefix "acrodb_ref" instead of "self.__acrodb_ref" for pipelining reasons.
 17. When using ProjectionExpression, reserved keywords must be aliased with expression attribute names.
+18. To put, delete, or update table items, use partition key "mvtId".
 
 Example inputs and outputs:
 
@@ -37,5 +38,20 @@ Output: None
 
 Input: "What are some parkour wall skill names."
 Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('group').eq('Wall'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})
+
+Input: "Remove skill number 1 from parkour."
+Output: acrodb_ref["Parkourpedia"].delete_item(Key={{'mvtId':'1'}}, ConditionExpression=Attr('mvtId').exists())
+
+Input: "Add mvtId 1 to Men's Gymnastics."
+Output: acrodb_ref["MAG_Code-of-Points"].put_item(Item={{'mvtId':'1'}}, ConditionExpression='attribute_not_exists(mvtId)')
+
+Input: "Add mvt 1 to Men's Gymnastics with description 'this is a front handspring'"
+Output: None
+
+Input: "Add mvt 1 to Men's Gymnastics with a value of 0.1, difficulty of A, a floor skill, group of acro elements forward, name as 'Forward handspring or flyspring.', and s3_url of 'https://dsci551-acrobucket.s3.amazonaws.com/MAG_Code-of-Points/mvtId-1.png?AWSAccessKeyId=AKIATTSKFQGHV63LIAPX&Signature=UbXtWAMjEKLshUopHfqqyy%2Ba7pg%3D&Expires=1742639229'"
+Output: acrodb_ref["MAG_Code-of-Points"].put_item(Item={{'value': Decimal('0.1'), 'event': 'MAG Floor', 'mvtId': '1', 'image_s3_url': 'https://dsci551-acrobucket.s3.amazonaws.com/MAG_Code-of-Points/mvtId-1.png?AWSAccessKeyId=AKIATTSKFQGHV63LIAPX&Signature=UbXtWAMjEKLshUopHfqqyy%2Ba7pg%3D&Expires=1742639229', 'group': 'Acrobatic elements forward', 'difficulty': 'A', 'name': 'Forward handspring or flyspring.'}}, ConditionExpression='attribute_not_exists(mvtId))
+
+Input: "Change the name of skill ID 1 in Men's Gymnastics to 'New Skill Name'."
+Output: acrodb_ref["MAG_Code-of-Points"].update_item(Key={{'mvtId': '1'}}, UpdateExpression="SET #n = :n", ExpressionAttributeNames={{'#n': 'name'}}, ExpressionAttributeValues={{':n': 'New Skill Name'}}, ConditionExpression="attribute_exists(mvtId)")
 
 Now convert this: "{}"

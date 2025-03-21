@@ -26,6 +26,8 @@ def main():
     my_chat = ChatDB(acrodb_list=[my_acro1, my_acro2])
     if my_chat.set_api_key(API_KEY=open("secrets/API_KEY" if os.path.basename(os.getcwd()) == "AcroDB" else "../secrets/API_KEY").read()):
         print("OpenAI client setup successful!")
+    if my_chat.set_prompt(prompt_path="src/prompts/main.txt" if os.path.basename(os.getcwd()) == "AcroDB" else "../src/prompts/main.txt"):
+        print("Prompt is set!")
 
     my_chat.loop()
 
