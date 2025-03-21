@@ -1,5 +1,6 @@
-# 🤸‍♂️ AcroDB 🤸
-Chat-queried NoSQL database for gymnastics & parkour skills using AWS DynamoDB and OpenAI.
+# 🤸‍♂️ AcroDB 🤸 
+Chat-queried NoSQL database for gymnastics & parkour skills using AWS DynamoDB and OpenAI. [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 ## 🧠 Tech Stack 🤖
 - AWS NoSQL (DynamoDB, S3) with Boto3
 - Python with OpenAI
