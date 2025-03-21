@@ -3,7 +3,7 @@ Chat-queried NoSQL database for gymnastics & parkour skills using AWS DynamoDB a
 
 ## 🧠 Tech Stack 🤖
 - AWS NoSQL (DynamoDB, S3) with Boto3
-- Python with OpenAI (requires API key for token usage)
+- Python with OpenAI \**requires API key for token usage*
 - *TBD*: Web UI or GUI, currently CLI
   
 ## 🗄️ Database Contents 🗄️
