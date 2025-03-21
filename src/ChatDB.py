@@ -16,14 +16,15 @@ class ChatDB():
     # Constructor
     ################################
     """Chat query. Interfaces with AcroDB instance(s)."""
-    def __init__(self, acrodb_list: list[AcroDB]=[], API_KEY: str="", verbose: bool=False, prompt_path: str=""):
+    def __init__(self, acrodb_list: list[AcroDB]=[], API_KEY: str="", prompt_path: str="", verbose: bool=False):
         """
         Initialize ChatDB instance.
 
         Args:
-            acrodb_list (list[AcroDB]): AcroDB instances to interface with (can be dynamically manipulated)
-            API_KEY (str): OpenAI API key (can be set later; REQUIRED for chat function, KEEP SECURE)
-            verbose (bool): print OpenAI client respone
+            acrodb_list (list[AcroDB]): AcroDB instances to interface with (can be set/reset later)
+            API_KEY (str): OpenAI API key (can be set/reset later; REQUIRED for chat function, KEEP SECURE)
+            prompt_path (str): path to OpenAI prompt (can be set/reset later)
+            verbose (bool): print OpenAI client response
         """
         self.__acrodb_list = acrodb_list
         self.__acrodb_count = len(self.__acrodb_list)
@@ -66,7 +67,6 @@ class ChatDB():
         except FileNotFoundError as error:
             print(f"Prompt file not found: {error}")
             return False
-
 
     # Getters
     ################################
@@ -151,7 +151,7 @@ class ChatDB():
             return f"Client Error: {error}"
         
     def print_exec_items(self, exec_response: any=None) -> None:
-        """Display exec_response so that only Items are displayed in tabular form."""
+        """Display exec_response so that Items are displayed in tabular form."""
         if not exec_response:
             print("No results returned.")
             return
