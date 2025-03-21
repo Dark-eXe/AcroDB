@@ -136,7 +136,7 @@ class ChatDB():
     def exec_response(self, response: str="") -> any:
         """Execute chat-queried response using eval()."""
         try:
-            return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr, "Decimal": Decimal})
+            return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr, "Decimal": Decimal, "boto3": boto3})
         except SyntaxError as error:
             print(f"response: {response}")
             return f"Syntax Error: {error}"
@@ -158,7 +158,14 @@ class ChatDB():
             print(exec_response)
             return
         if "Items" not in exec_response.keys():
-            print('200: Success' if exec_response['ResponseMetadata']['HTTPStatusCode'] == 200 else "Request unsuccessful")
+            if "Table" in exec_response.keys(): # describe_table()
+                print("")
+                print("TABLE")
+                print("-" * 10)
+                for key, value in exec_response["Table"].items():
+                    print(f"{key}: {value}")
+            else:
+                print('200: Success' if exec_response['ResponseMetadata']['HTTPStatusCode'] == 200 else "Request unsuccessful")
             return
         for Item in exec_response["Items"]:
             print(Item)

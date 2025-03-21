@@ -27,6 +27,9 @@ Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('difficulty').eq('
 Input: "Show me tables."
 Output: ", ".join(list(acrodb_ref.keys()))
 
+Input: "Show me the parkour table in detail."
+Output: boto3.client('dynamodb').describe_table(TableName='Parkourpedia')
+
 Input: "Get me skill ID 1 from the Men's Gymnastics table."
 Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('mvtId').eq('1'))
 
