@@ -1,3 +1,2 @@
-## Tests using Pytest
-ex. usage:<br>
-pytest tests/test_AcroDB.py
+## Pytest
+Example Usage: ```pytest tests/test_AcroDB.py```
