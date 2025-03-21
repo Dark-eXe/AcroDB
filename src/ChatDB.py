@@ -10,6 +10,7 @@ from botocore.exceptions import ClientError
 from openai import OpenAI
 
 from decimal import Decimal
+import itertools
 
 class ChatDB():
     # Constructor
@@ -136,7 +137,7 @@ class ChatDB():
     def exec_response(self, response: str="") -> any:
         """Execute chat-queried response using eval()."""
         try:
-            return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr, "Decimal": Decimal, "boto3": boto3})
+            return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr, "Decimal": Decimal, "boto3": boto3, "itertools": itertools})
         except SyntaxError as error:
             print(f"response: {response}")
             return f"Syntax Error: {error}"
