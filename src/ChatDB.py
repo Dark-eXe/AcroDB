@@ -7,7 +7,7 @@ import os
 import boto3
 from boto3.dynamodb.conditions import Attr, Key
 from botocore.exceptions import ClientError
-from openai import OpenAI
+from openai import OpenAI, RateLimitError
 
 from decimal import Decimal
 import itertools
@@ -125,10 +125,15 @@ class ChatDB():
         sys_message = {"role": "system", "content": formatted_prompt}
         self.__chat_log.append(sys_message)
 
-        response = self.__client.chat.completions.create(
-            model="gpt-4",
-            messages=self.__chat_log
-        )
+        try:
+            response = self.__client.chat.completions.create(
+                model="gpt-4",
+                messages=self.__chat_log[-3:] if len(self.__chat_log) > 3 else self.__chat_log
+            )
+        except RateLimitError as error:
+            print(f"Rate Limit Error: {error}")
+            return None
+        
         assistant_response = response.choices[0].message.content
         self.__chat_log.append({"role": "assistant", "content": assistant_response})
 
@@ -150,28 +155,34 @@ class ChatDB():
                 return("Invalid data modification.")
             return f"Client Error: {error}"
         
-    def print_exec_items(self, exec_response: any=None) -> None:
+    def exec_items(self, exec_response: any=None) -> str:
         """Display exec_response so that Items are displayed in tabular form."""
         if not exec_response:
-            print("No results returned.")
-            return
-        if not isinstance(exec_response, dict): # probably an excepted error, or table list
-            print(exec_response)
-            return
-        if "Items" not in exec_response.keys():
-            if "Table" in exec_response.keys(): # describe_table()
-                print("")
-                print("TABLE")
-                print("-" * 10)
-                for key, value in exec_response["Table"].items():
-                    print(f"{key}: {value}")
-            else:
-                print('200: Success' if exec_response['ResponseMetadata']['HTTPStatusCode'] == 200 else "Request unsuccessful")
-            return
-        for Item in exec_response["Items"]:
-            print(Item)
+            return "No results returned."
+        if not isinstance(exec_response, dict):  # Probably an error message or a plain list of tables
+            return str(exec_response)
 
-    # Pipeline
+        if "Items" in exec_response:
+            items_output = "\n".join([str(item) for item in exec_response["Items"]])
+            return items_output if items_output else "No matching items found."
+
+        if "Table" in exec_response:  # For describe_table()
+            table_info = "\nTABLE DETAILS\n" + "-" * 15 + "\n"
+            table_info += "\n".join([f"{key}: {value}" for key, value in exec_response["Table"].items()])
+            return table_info
+
+        if "Count" in exec_response:  # For count queries
+            return f"Total count: {exec_response['Count']}"
+
+        if "ResponseMetadata" in exec_response:
+            status_code = exec_response["ResponseMetadata"].get("HTTPStatusCode", 400)
+            return "200: Success" if status_code == 200 else f"Request unsuccessful (Status: {status_code})"
+        
+        # Fallback case for unknown structures
+        return str(exec_response)
+
+
+    # CLI Pipeline
     ################################
     def loop(self):
         """Main execution loop for CLI chat-query."""
@@ -180,7 +191,7 @@ class ChatDB():
             chat = self.get_chat()
             if chat.lower() == 'q':
                 break
-            self.print_exec_items(self.exec_response(self.translate_chat(chat)))
+            print(self.exec_items(self.exec_response(self.translate_chat(chat))))
             print("")
 
 
