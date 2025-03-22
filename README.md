@@ -17,7 +17,7 @@ AcroDB
 │       ├── package.json
 │       └── src
 │           ├── App.css
-│           ├── App.js
+│           └── App.js
 └── tests
     ├── conftest.py
     └── test_AcroDB.py
@@ -34,7 +34,7 @@ Uses ```ChatDB.loop()```
 ## 🧠 Tech Stack 🤖
 - AWS NoSQL Database Services with Boto3: DynamoDB, S3 \****requires AWS client permissions for access (closed to public for now)*
 - OpenAI with Python SDK \****requires API key for token usage*
-- Web UI: React 
+- Web User Interface: React 
   
 ## 🗄️ Database Contents 🗄️
 DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary
