@@ -3,6 +3,8 @@ Chat-queried NoSQL database for gymnastics & parkour skills using AWS and OpenAI
 [![AmazonDynamoDB](https://img.shields.io/badge/Amazon%20DynamoDB-4053D6?style=for-the-badge&logo=Amazon%20DynamoDB&logoColor=white)](https://aws.amazon.com/dynamodb/) [![Amazon S3](https://img.shields.io/badge/Amazon%20S3-FF9900?style=for-the-badge&logo=amazons3&logoColor=white)](https://aws.amazon.com/s3/) [![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
 ```
 AcroDB
+├── LICENSE
+├── README.md
 ├── demo
 │   ├── basic_query.ipynb
 │   ├── chat_query.ipynb
@@ -10,8 +12,14 @@ AcroDB
 ├── src
 │   ├── AcroDB.py
 │   ├── ChatDB.py
-│   └── prompts
-│       └── main.txt
+│   ├── main.py
+│   ├── prompts
+│   │   └── main.txt
+│   └── react-app
+│       ├── package.json
+│       └── src
+│           ├── App.css
+│           ├── App.js
 └── tests
     ├── conftest.py
     └── test_AcroDB.py
