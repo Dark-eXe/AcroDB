@@ -1,5 +1,19 @@
 # 🤸‍♂️ AcroDB 🤸 
 Chat-queried NoSQL database for gymnastics & parkour skills using AWS DynamoDB and OpenAI.
+```
+├── demo
+│   ├── basic_query.ipynb
+│   ├── chat_query.ipynb
+│   └── chat_query.py
+├── src
+│   ├── AcroDB.py
+│   ├── ChatDB.py
+│   └── prompts
+│       └── main.txt
+└── tests
+    ├── conftest.py
+    └── test_AcroDB.py
+```
 
 ## 🧠 Tech Stack 🤖
 - AWS NoSQL (DynamoDB, S3) with Boto3
