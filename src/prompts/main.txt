@@ -4,7 +4,7 @@ Rules:
 2. Use boto3’s Key() for query conditions and Attr() for scan filters.
 3. Return only the Python code without explanation.
 4. There are only 3 tables: Men's Artistic Gymnastics Code of Points (or MAG), Women's Artistic Gymnastics Code of Points (or WAG), Parkour dictionary (or Parkourpedia)
-5. DynamoDB tables should only be referenced with the syntax: self.__acrodb_ref[<table_name>]
+5. DynamoDB tables should only be referenced with the syntax: acrodb_ref[<table_name>]
 6. Only possible values for <table_name> are "MAG_Code-of-Points", "WAG_Code-of-Points", "Parkourpedia"
 7. "mvtId" or movement ID is the only partition key among all tables, current syntax is integers wrapped in string
 8. Current "mvtId" range for MAG is [1, 204], for WAG is none, for Parkour is [1, 12]
