@@ -18,6 +18,9 @@ AcroDB
 ```
 
 ## 👷‍♂️ Progress 👷‍♀️
+#### Web Interface 
+![Snip20250322_4](https://github.com/user-attachments/assets/213a9827-9245-4c49-afa5-b70631d6e132)
+
 #### Command-Line Interface
 Uses ```ChatDB.loop()```
 ![image](https://github.com/user-attachments/assets/dcad7bb3-b835-4881-9680-c821f3d8d694)
@@ -25,7 +28,7 @@ Uses ```ChatDB.loop()```
 ## 🧠 Tech Stack 🤖
 - AWS NoSQL Database Services with Boto3: DynamoDB, S3 \****requires AWS client permissions for access (closed to public for now)*
 - OpenAI with Python SDK \****requires API key for token usage*
-- *TBD*: Web UI or GUI, currently CLI
+- Web UI: React 
   
 ## 🗄️ Database Contents 🗄️
 DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary
