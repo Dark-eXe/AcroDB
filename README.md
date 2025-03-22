@@ -1,6 +1,7 @@
 # 🤸‍♂️ AcroDB 🤸 
 Chat-queried NoSQL database for gymnastics & parkour skills using AWS DynamoDB and OpenAI.
 ```
+AcroDB
 ├── demo
 │   ├── basic_query.ipynb
 │   ├── chat_query.ipynb
