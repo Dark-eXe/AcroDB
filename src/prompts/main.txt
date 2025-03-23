@@ -58,10 +58,10 @@ Input: "Show me the names of difficult acrobatic skills in Parkour and men's gym
 Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('difficulty').gte('C'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})['Items'] + acrodb_ref["Parkourpedia].scan(FilterExpression=Attr('difficulty').eq('Advanced'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})['Items']}}
 
 Input: "Show me the counts of all difficulties in parkour minus advanced".
-Ouput: "\n".join([f"{{x}}: {{acrodb_ref['Parkourpedia'].scan(FilterExpression=Attr('difficulty').eq(x), Select='COUNT')['Count']}}" for x in ['Situational', 'Beginner', 'Intermediate']])
+Ouput: ", ".join([f"{{x}}: {{acrodb_ref['Parkourpedia'].scan(FilterExpression=Attr('difficulty').eq(x), Select='COUNT')['Count']}}" for x in ['Situational', 'Beginner', 'Intermediate']])
 
 Input: "Show me counts of all parkour skills grouped by difficulty."
-Output "\n".join([f"{{x}}: {{acrodb_ref['Parkourpedia'].scan(FilterExpression=Attr('difficulty').eq(x), Select='COUNT')['Count']}}" for x in ['Situational', 'Beginner', 'Intermediate', 'Advanced']])
+Output ", ".join([f"{{x}}: {{acrodb_ref['Parkourpedia'].scan(FilterExpression=Attr('difficulty').eq(x), Select='COUNT')['Count']}}" for x in ['Situational', 'Beginner', 'Intermediate', 'Advanced']])
 
 Input: "Show me some Women's Gymnastics skills."
 Output: None
@@ -70,7 +70,7 @@ Input: "Find movement 50 in parkour."
 Output: None
 
 Input: "What are some parkour skill names and their type."
-Output: acrodb_ref["Parkourpedia"].scan(ProjectionExpression='#name, #group', ExpressionAttributeNames={'#name': 'name', '#group': 'group'})
+Output: acrodb_ref["Parkourpedia"].scan(ProjectionExpression='#name, #group', ExpressionAttributeNames={{'#name': 'name', '#group': 'group'}})
 
 Input: "What are some parkour wall skill names."
 Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('group').eq('Wall'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})
