@@ -1,8 +1,6 @@
 import './App.css';
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-// const videos = ["/mv1.mp4", "/mv2.mp4", "/mv3.mp4"];
 
 function App() {
   const [query, setQuery] = useState("");
@@ -41,42 +39,87 @@ function App() {
   };
 
   return (
-    <div className="container text-center mt-2 fixed-top bg-white bg-opacity-10 bg-gradient">
+    // container
+    <div>
+      {/*video background*/}
       <video autoPlay loop muted className="video-background">
-        <source src="/mv.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+          <source src="/mv.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
+      {/*container*/}
+      <div className="container text-center mt-2 fixed-top bg-black bg-opacity-75">
+        {/*header*/}
+        <div class="jumbotron">
+          <h1 class="display-4 text-warning">Acro<span class="display-4 text-white">DB</span></h1>
+          <p class="lead">Chat-queried NoSQL database for gymnastics & parkour skills using AWS and OpenAI.</p>
+          <hr class="my-4"/>
+          <p class="lead">What acrobatic skills are you looking for?</p>
+        </div>
 
-      <header className="pb-5 text-white" >
-        <h1>AcroDB</h1>
-        <h6>Chat-queried NoSQL database for gymnastics & parkour skills using AWS and OpenAI.</h6>
-      </header>
+        {/*query*/}
+        <div className="">
+          {/*form*/}
+          <form onSubmit={handleSubmit} className="d-flex justify-content-center mb-3">
+            <input 
+              placeholder="Enter query..."
+              class="form-control w-100"
+              value={query} 
+              onChange={(event) => setQuery(event.target.value)} 
+              className="form-control form-control-sm w-100"
+            />
+            <button type="submit" className="btn btn-outline-light ms-2 " disabled={!query.trim()}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+              </svg>
+            </button>
+          </form>
 
-      <div className="">
-        <form onSubmit={handleSubmit} className="d-flex justify-content-center mb-3">
-          <input 
-            value={query} 
-            onChange={(event) => setQuery(event.target.value)} 
-            placeholder="Enter query..."
-            className="form-control form-control-sm w-100"
-          />
-          <button type="submit" className="btn btn-outline-light ms-2">Send</button>
-        </form>
+          {/*response*/}
+          <div className="response-container">
+            {response.length > 0 ? (
+              response.map((item, index) => (
+                typeof item === "string" ? (  // Handle raw string responses separately
+                  <div key={index} className="alert alert-secondary">{item}</div>
+                ) : (
+                  <div key={index} className="card text-white bg-dark mb-3">
+                    <div className="card-body">
+                      <h5 className="card-title">{item.name || "Unnamed Movement"}</h5>
 
-        <pre className="text-light">
-          {response.length ? response.map((item, index) => (
-            <div key={index}>{item}</div>
-          )) : ""}
-        </pre>
+                      {/* Optional Image */}
+                      {item.image_s3_url && (
+                        <img src={item.image_s3_url} alt={item.name} className="card-img-top mb-2" />
+                      )}
 
-        {hasMore && (
-          <button onClick={handleLoadMore} className="btn btn-outline-light mt-3">
-            Load More
-          </button>
-        )}
+                      {/* Dynamically render available attributes */}
+                      <ul className="list-group list-group-flush">
+                        {Object.entries(item).map(([key, value]) => {
+                          if (key !== "name" && key !== "image_s3_url") {  // Exclude title & image
+                            return (
+                              <li key={key} className="list-group-item bg-dark text-white">
+                                <strong>{key.replace(/_/g, " ")}:</strong> {value.toString()}
+                              </li>
+                            );
+                          }
+                          return null;
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                )
+              ))
+            ) : ""
+            }
+          </div>
+
+          {/*pagination*/}
+          {hasMore && (
+            <button onClick={handleLoadMore} className="btn btn-outline-light mt-3">
+              Load More
+            </button>
+          )}
+        </div>
       </div>
-
     </div>
   );
 }

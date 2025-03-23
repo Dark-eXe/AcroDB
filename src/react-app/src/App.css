@@ -40,7 +40,7 @@
 body {
   background-color: #1e1e1e !important;  /* Dark gray */
   color: white !important;
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
   font-size: large !important;
   min-height: 100vh;
   display: flex;
@@ -51,11 +51,39 @@ body {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 600px; /* Limits container width */
+  width: 100%; /* Keeps responsiveness */
+  max-height: 98vh; /* Limits height to allow scrolling */
+  overflow-y: auto !important; /* Enables scrolling */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers content horizontally */
+  justify-content: flex-start; /* Keeps items at the top */
   padding: 20px;
-  background-color: #2a2a2a;
+  margin: 20px auto; /* Centers container */
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+}
+
+.results-container {
+  max-height: 60vh;  /* Limits container height to 60% of viewport */
+  overflow-y: auto !important; /* Ensures vertical scrolling */
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adds spacing between cards */
+}
+
+/* Ensure individual cards are constrained */
+.card {
+  width: 100% !important; /* Full width of container */
+  max-width: 600px !important; /* Prevents excessive width */
+  padding: 15px !important;
+  border-radius: 10px !important;
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1) !important;
+  margin-bottom: 10px; /* Adds space between cards */
 }
 
 .video-background {
@@ -66,5 +94,21 @@ body {
   height: 100%;
   object-fit: cover; /* Ensures video covers the entire screen */
   z-index: -1; /* Keeps it behind all content */
-  opacity: 0.15; /* Adjust opacity for a faded effect */
+  opacity: 0.2; /* Adjust opacity for a faded effect */
+}
+
+.form-control:valid {
+  background-color:  #383838 !important;
+  border-color:  #383838 !important;
+  color: white !important;
+}
+
+::placeholder {
+  color: rgb(182, 182, 182) !important;
+  opacity: 1; /* Ensures full visibility */
+}
+
+.form-control:focus {
+  box-shadow: none !important; /* Removes Bootstrap's default shadow */
+  border-color: white !important; /* Sets white border */
 }

@@ -132,7 +132,7 @@ class ChatDB():
             )
         except RateLimitError as error:
             print(f"Rate Limit Error: {error}")
-            return None
+            return error
         
         assistant_response = response.choices[0].message.content
         self.__chat_log.append({"role": "assistant", "content": assistant_response})
@@ -141,6 +141,8 @@ class ChatDB():
     
     def exec_response(self, response: str="") -> any:
         """Execute chat-queried response using eval()."""
+        if isinstance(response, RateLimitError):
+            return response
         try:
             return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr, "Decimal": Decimal, "boto3": boto3, "itertools": itertools})
         except SyntaxError as error:
@@ -155,31 +157,31 @@ class ChatDB():
                 return("Invalid data modification.")
             return f"Client Error: {error}"
         
-    def exec_items(self, exec_response: any=None) -> str:
+    def exec_items(self, exec_response: any=None) -> any:
         """Display exec_response so that Items are displayed in tabular form."""
         if not exec_response:
-            return "No results returned."
+            return ["No results returned."]
         if not isinstance(exec_response, dict):  # Probably an error message or a plain list of tables
-            return str(exec_response)
+            return [str(exec_response)]
 
         if "Items" in exec_response:
-            items_output = [str(item) for item in exec_response["Items"]]
-            return items_output if items_output else "No matching items found."
+            items_output = [item for item in exec_response["Items"]]
+            return items_output if items_output else ["No matching items found."]
 
         if "Table" in exec_response:  # For describe_table()
             table_info = "\nTABLE DETAILS\n" + "-" * 15 + "\n"
             table_info += "\n".join([f"{key}: {value}" for key, value in exec_response["Table"].items()])
-            return table_info
+            return [table_info]
 
         if "Count" in exec_response:  # For count queries
-            return f"Total count: {exec_response['Count']}"
+            return [f"Total count: {exec_response['Count']}"]
 
         if "ResponseMetadata" in exec_response:
             status_code = exec_response["ResponseMetadata"].get("HTTPStatusCode", 400)
-            return "200: Success" if status_code == 200 else f"Request unsuccessful (Status: {status_code})"
+            return ["200: Success"] if status_code == 200 else [f"Request unsuccessful (Status: {status_code})"]
         
         # Fallback case for unknown structures
-        return str(exec_response)
+        return [str(exec_response)]
 
 
     # CLI Pipeline
