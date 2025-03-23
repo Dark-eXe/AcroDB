@@ -25,7 +25,8 @@ AcroDB
 
 ## 👷‍♂️ Progress 👷‍♀️
 #### Web Interface 
-![Snip20250322_4](https://github.com/user-attachments/assets/213a9827-9245-4c49-afa5-b70631d6e132)
+![image](https://github.com/user-attachments/assets/bb2fc256-e81c-4ccd-8373-7e2544c54c18)
+
 
 #### Command-Line Interface
 Uses ```ChatDB.loop()```

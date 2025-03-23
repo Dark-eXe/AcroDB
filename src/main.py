@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from AcroDB import AcroDB
@@ -30,8 +30,21 @@ class QueryRequest(BaseModel):
     query: str
 
 @app.post('/query')
-async def query_chatdb(request: QueryRequest):
+async def query_chatdb(
+        request: QueryRequest, 
+        page: int = Query(1, alias="page", ge=1),
+        limit: int = Query(5, alias="limit", ge=1, le=50)
+    ):
     """Handles queries from the frontend."""
     response = chat.translate_chat(request.query)
     result = chat.exec_items(chat.exec_response(response))
-    return {"result": result}
+
+    # Pagination logic: Slice results
+    start_idx = (page - 1) * limit
+    end_idx = start_idx + limit
+    paginated_results = result[start_idx:end_idx]
+
+    # Determine if more results exist
+    has_more = end_idx < len(result)
+
+    return {"result": paginated_results, "has_more": has_more}
