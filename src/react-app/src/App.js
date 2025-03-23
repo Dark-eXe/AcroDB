@@ -80,11 +80,11 @@ function App() {
             {response.length > 0 ? (
               response.map((item, index) => (
                 typeof item === "string" ? (  // Handle raw string responses separately
-                  <div key={index} className="alert alert-secondary">{item}</div>
+                  <div key={index} className="">{item}</div>
                 ) : (
                   <div key={index} className="card text-white bg-dark mb-3">
                     <div className="card-body">
-                      <h5 className="card-title">{item.name || "Unnamed Movement"}</h5>
+                      <h5 className="card-title">{item.name || ""}</h5>
 
                       {/* Optional Image */}
                       {item.image_s3_url && (
