@@ -24,8 +24,11 @@ AcroDB
 ```
 
 ## 👷‍♂️ Progress 👷‍♀️
-#### Web Interface 
+#### Web Interface 	
+[![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
 ![Snip20250323_34](https://github.com/user-attachments/assets/1b3a4d37-ee99-4307-af37-a0c1dbfab4d6)
+<br><br>
 ![image](https://github.com/user-attachments/assets/6f230b0a-41a6-41c0-931f-4e8cd580f456)
 
 
@@ -37,7 +40,6 @@ Uses ```ChatDB.loop()```
 ## 🧠 Tech Stack 🤖
 - AWS NoSQL Database Services with Boto3: DynamoDB, S3 \****requires AWS client permissions for access (closed to public for now)*
 - OpenAI with Python SDK \****requires API key for token usage*
-- Web User Interface: React 
   
 ## 🗄️ Database Contents 🗄️
 DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary
