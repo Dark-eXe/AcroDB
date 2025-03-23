@@ -163,7 +163,7 @@ class ChatDB():
             return str(exec_response)
 
         if "Items" in exec_response:
-            items_output = "\n".join([str(item) for item in exec_response["Items"]])
+            items_output = [str(item) for item in exec_response["Items"]]
             return items_output if items_output else "No matching items found."
 
         if "Table" in exec_response:  # For describe_table()
