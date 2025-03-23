@@ -69,6 +69,9 @@ Output: None
 Input: "Find movement 50 in parkour."
 Output: None
 
+Input: "What are some parkour skill names and their type."
+Output: acrodb_ref["Parkourpedia"].scan(ProjectionExpression='#name, #group', ExpressionAttributeNames={'#name': 'name', '#group': 'group'})
+
 Input: "What are some parkour wall skill names."
 Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('group').eq('Wall'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})
 
