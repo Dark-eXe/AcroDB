@@ -25,7 +25,9 @@ AcroDB
 
 ## 👷‍♂️ Progress 👷‍♀️
 #### Web Interface 
-![image](https://github.com/user-attachments/assets/bb2fc256-e81c-4ccd-8373-7e2544c54c18)
+![Snip20250323_34](https://github.com/user-attachments/assets/1b3a4d37-ee99-4307-af37-a0c1dbfab4d6)
+![image](https://github.com/user-attachments/assets/6f230b0a-41a6-41c0-931f-4e8cd580f456)
+
 
 
 #### Command-Line Interface
