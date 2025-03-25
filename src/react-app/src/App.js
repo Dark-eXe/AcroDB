@@ -38,6 +38,32 @@ function App() {
     fetchResults(page + 1);
   };
 
+  const renderMultimedia = (url) => {
+    if (!url) return null; // No multimedia
+  
+    const fileExtension = url.split('.').pop().split('?')[0].toLowerCase(); // Extract file type
+  
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension)) {
+      return <img src={url} alt="media" className="media-img" />;
+    } 
+    else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
+      return <video controls className="media-video">
+        <source src={url} type={`video/${fileExtension}`} />
+        Your browser does not support the video tag.
+      </video>;
+    } 
+    else if (fileExtension === 'pdf') {
+      return <iframe src={url} className="media-pdf" title="PDF Viewer"></iframe>;
+    } 
+    else if (fileExtension === 'txt') {
+      return <a href={url} target="_blank" rel="noopener noreferrer">View Text File</a>;
+    } 
+    else {
+      return <a href={url} download>{url}</a>;
+    }
+  };
+  
+
   return (
     // container
     <div>
@@ -86,9 +112,11 @@ function App() {
                     <div className="card-body">
                       <h5 className="card-title">{item.name || ""}</h5>
 
-                      {/* Optional Image */}
+                      {/* Optional Multimedia */}
                       {item.image_s3_url && (
-                        <img src={item.image_s3_url} alt={item.name} className="card-img-top mb-2" />
+                        <div className="media-container">
+                          {renderMultimedia(item.image_s3_url)}
+                        </div>
                       )}
 
                       {/* Dynamically render available attributes */}
