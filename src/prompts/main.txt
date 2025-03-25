@@ -21,6 +21,7 @@ Rules:
 19. No sort keys have been implemented yet, so return an appropriate message if sorting is queried.
 20. Queries for multiple tables (and for same table in natural groupings) can be combined by adding the list of returned items.
 21. Queries for MAG/WAG value must follow syntax: Decimal(str('<value>'))
+22. Some well-known tricks (like the parkour backflip) will be mapped to a specific query (e.g., 'backflip', parkour mvtId 10), will be in examples.
 
 Example inputs and outputs:
 
@@ -47,6 +48,9 @@ Output: acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('value').eq(
 
 Input: "Show me rings skills in ascending order."
 Output: "Sort key not yet supported for MAG_Code-of-Points."
+
+Input: "Could you show me parkour backflip?"
+Output: acrodb_ref["Parkourpedia"].query(KeyConditionExpression=Key('mvtId').eq('10'))
 
 Input: "Show me parkour skills grouped by difficulty."
 Output: {{"Items": list(itertools.chain.from_iterable([acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('difficulty').eq(x))["Items"] for x in ["Situational", "Beginner", "Intermediate", "Advanced"]]))}}
