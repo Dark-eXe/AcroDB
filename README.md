@@ -29,7 +29,8 @@ AcroDB
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
 ![Snip20250323_34](https://github.com/user-attachments/assets/1b3a4d37-ee99-4307-af37-a0c1dbfab4d6)
 <br>
-<img src="https://github.com/user-attachments/assets/6f230b0a-41a6-41c0-931f-4e8cd580f456" width=50% height=50%> <img src="https://github.com/user-attachments/assets/8f548f53-f38f-4d09-8d62-a0a274ee6cfa" width=47.75% height=47.75%>
+![Snip20250325_20](https://github.com/user-attachments/assets/15a106e3-4364-4876-8585-68c043c0f6b3)
+
 
 
 
