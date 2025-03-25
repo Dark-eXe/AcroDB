@@ -162,6 +162,8 @@ class ChatDB():
         if not exec_response:
             return ["No results returned."]
         if not isinstance(exec_response, dict):  # Probably an error message or a plain list of tables
+            if isinstance(exec_response, list):
+                return [str(element) for element in exec_response]
             return [str(exec_response)]
 
         if "Items" in exec_response:
@@ -169,8 +171,9 @@ class ChatDB():
             return items_output if items_output else ["No matching items found."]
 
         if "Table" in exec_response:  # For describe_table()
-            table_info = "\nTABLE DETAILS\n" + "-" * 15 + "\n"
-            table_info += "\n".join([f"{key}: {value}" for key, value in exec_response["Table"].items()])
+            table_info = {"name": "TABLE INFO"}
+            for key, value in exec_response["Table"].items():
+                table_info[key] = str(value)
             return [table_info]
 
         if "Count" in exec_response:  # For count queries

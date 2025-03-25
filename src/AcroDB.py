@@ -203,6 +203,14 @@ class AcroDB():
             
         Returns:
             response: JSON response message"""
+        # .txt media (hyperlink) -> invoke put_item
+        if self.__get_file_extension(media_path) == ".txt":
+            with open(media_path, 'r') as file:
+                Item = self.get_item(mvtId=mvtId)
+                Item["image_s3_url"] = file.read()
+                return self.__put_item(Item=Item, force=True)
+        
+        # other multimedia
         response_1 = self.__insert_media(mvtId=mvtId, media_path=media_path)
         if not response_1:
             return None
