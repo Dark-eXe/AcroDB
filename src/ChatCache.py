@@ -1,5 +1,5 @@
 class ChatCache():
-    """Class for caching... <translation_response>: <exec_result> or <query>:<translation_response"""
+    """Class for caching... <translation_response>: <exec_result> or <query>:<translation_response>"""
     def __init__(self):
         self.cache_sequence = []
         self.cache_response = {}
