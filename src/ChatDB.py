@@ -1,7 +1,9 @@
 try:
     from .AcroDB import AcroDB
+    from .ChatCache import ChatCache
 except ImportError:
     from AcroDB import AcroDB
+    from ChatCache import ChatCache
 import os
 
 import boto3
@@ -37,6 +39,7 @@ class ChatDB():
             print("ChatDB client successfully set.")
 
         self.__chat_log = []
+        self.__cache = ChatCache()
         self.__prompt = ""
         if prompt_path:
             if not os.path.exists(prompt_path):
@@ -125,6 +128,15 @@ class ChatDB():
         sys_message = {"role": "system", "content": formatted_prompt}
         self.__chat_log.append(sys_message)
 
+        # query-translation cache
+        if query in self.__cache.cache_sequence:
+            print('CACHE')
+            assistant_response = self.__cache.cache_response[query]
+            self.__chat_log.append({"role": "assistant", "content": assistant_response})
+            return assistant_response
+        print('NO CACHE')
+
+        # translation
         try:
             response = self.__client.chat.completions.create(
                 model="gpt-4",
@@ -134,13 +146,19 @@ class ChatDB():
             print(f"Rate Limit Error: {error}")
             return error
         
+        # response
         assistant_response = response.choices[0].message.content
+        if assistant_response.startswith("Output: "): # defensive: prompt takes example outputs literally
+            assistant_response = assistant_response[8:]
         self.__chat_log.append({"role": "assistant", "content": assistant_response})
+        self.__cache.addPair(response=query, result=assistant_response)
 
         return assistant_response
     
     def exec_response(self, response: str="") -> any:
         """Execute chat-queried response using eval()."""
+        if response.startswith("Output: "): # defensive: prompt takes example outputs literally
+            response = response[8:]
         if isinstance(response, RateLimitError):
             return response
         try:
