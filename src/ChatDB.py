@@ -113,15 +113,13 @@ class ChatDB():
 
     def translate_chat(self, chat: str="") -> str:
         """
-        Translate NL chat to Boto3 table scan or query expression using OpenAI.
-
-        Boto3 Documentation: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/customizations/dynamodb.html
+        Translate NL chat to appropriate Boto3 call.
 
         Args:
             chat (str): user-input chat in natural language
         
         Returns:
-            response (str): OpenAI-translated executable (or None) referencing self.__acrodb_ref
+            response (str): OpenAI-translated executable (or message or None) referencing self.__acrodb_ref
         """
         query = chat
         formatted_prompt = self.__prompt.format(query)
@@ -130,11 +128,9 @@ class ChatDB():
 
         # query-translation cache
         if query in self.__cache.cache_sequence:
-            print('CACHE')
             assistant_response = self.__cache.cache_response[query]
             self.__chat_log.append({"role": "assistant", "content": assistant_response})
             return assistant_response
-        print('NO CACHE')
 
         # translation
         try:
@@ -156,7 +152,7 @@ class ChatDB():
         return assistant_response
     
     def exec_response(self, response: str="") -> any:
-        """Execute chat-queried response using eval()."""
+        """Execute chat-queried response using eval() or return appropriate response."""
         if response.startswith("Output: "): # defensive: prompt takes example outputs literally
             response = response[8:]
         if isinstance(response, RateLimitError):
@@ -216,8 +212,6 @@ class ChatDB():
                 break
             print(self.exec_items(self.exec_response(self.translate_chat(chat))))
             print("")
-
-
 
 def main():
     print("Script for ChatDB class.")
