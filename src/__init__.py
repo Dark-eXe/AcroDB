@@ -1,1 +1,1 @@
-__all__ = ["AcroDB", "ChatDB"]
+__all__ = ["AcroDB", "ChatDB", "ChatCache"]

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from AcroDB import AcroDB
 from ChatDB import ChatDB
+from ChatCache import ChatCache
 
 # AcroDB
 table_name, bucket_name = "MAG_Code-of-Points", "dsci551-acrobucket"
@@ -15,6 +16,9 @@ acro2 = AcroDB(table_name=table_name, bucket_name=bucket_name)
 chat = ChatDB(acrodb_list=[acro1, acro2])
 chat.set_api_key(API_KEY=open("../secrets/API_KEY").read())
 chat.set_prompt(prompt_path="prompts/main.txt")
+
+# ChatCache
+cache = ChatCache()
 
 # FastAPI
 app = FastAPI()
@@ -37,7 +41,11 @@ async def query_chatdb(
     ):
     """Handles queries from the frontend."""
     response = chat.translate_chat(request.query)
-    result = chat.exec_items(chat.exec_response(response))
+    if response in cache.cache_sequence:
+        result = cache.cache_response[response]
+    else:
+        result = chat.exec_items(chat.exec_response(response))
+        cache.addPair(response=response, result=result)
 
     # Pagination logic: Slice results
     start_idx = (page - 1) * limit
