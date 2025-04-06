@@ -49,7 +49,8 @@ Uses `ChatDB.loop()`
 
 DynamoDB: MAG Code of Points, WAG Code of Points (to be joined), Parkour dictionary
 
-> partition key: 'mvtId'
+> partition key: 'event'
+> sort key: 'mvtId'
 
 S3: Multimedia for movement demonstrations
 
