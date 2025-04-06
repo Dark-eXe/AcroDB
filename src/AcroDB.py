@@ -80,7 +80,7 @@ class AcroDB():
                 if error.response['Error']['Code'] != 'ConditionalCheckFailedException':
                     raise
 
-        message = f"mvtId {Item['mvtId']} successfully inserted to {self.__table_name}"
+        message = f"event, mvtId {Item['event'], Item['mvtId']} successfully inserted to {self.__table_name}"
         return {"message": message}
     
     def get_item(self, event: str, mvtId: str) -> dict:
@@ -88,6 +88,7 @@ class AcroDB():
         Gets item from DynamoDB table.
 
         Args:
+            event (str): primary key
             mvtId (str): primary key
 
         Returns:

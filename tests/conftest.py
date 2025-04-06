@@ -27,7 +27,7 @@ def mock_acrodb(table_name, bucket_name):
         mock_acro = AcroDB(table_name=table_name)
         mock_acro.get_table = MagicMock(return_value=MagicMock(table_name=table_name))
         mock_acro.get_bucket = MagicMock(return_value=bucket_name)
-        mock_acro.get_item = MagicMock(return_value={"mvtId": "test_mvtId"})
-        mock_acro.insert_s3_url = MagicMock(return_value={"message": f"mvtId test_mvtId successfully inserted to {table_name}"})
+        mock_acro.get_item = MagicMock(return_value={"event": "test_event", "mvtId": "test_mvtId"})
+        mock_acro.insert_s3_url = MagicMock(return_value={"message": f"event, mvtId test_event, test_mvtId successfully inserted to {table_name}"})
 
         yield mock_acro

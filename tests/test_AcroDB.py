@@ -31,8 +31,9 @@ def test_setters(mock_acrodb, new_table_name, new_bucket_name):
     assert mock_acrodb.get_bucket() == new_bucket_name
 
 def test_get_item(mock_acrodb):
+    assert mock_acrodb.get_item("test_event")["event"] == "test_event"
     assert mock_acrodb.get_item("test_mvtId")["mvtId"] == "test_mvtId"
 
 def test_s3url_insert(mock_acrodb, table_name):
-    message = f"mvtId test_mvtId successfully inserted to {table_name}"
+    message = f"event, mvtId test_event, test_mvtId successfully inserted to {table_name}"
     assert mock_acrodb.insert_s3_url("test_mvtId")["message"] == message
