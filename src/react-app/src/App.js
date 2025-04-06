@@ -65,7 +65,6 @@ function App() {
   
 
   return (
-    // container
     <div>
       {/*video background*/}
       <video autoPlay loop muted className="video-background">

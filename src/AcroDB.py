@@ -44,7 +44,7 @@ class AcroDB():
     # DB Interactions
     ################################
     def __get_attributes(self) -> set:
-        """Get set of attributes in table."""
+        """DEPRECATED: Get set of attributes in table."""
         Item = self.get_item(mvtId='1')
         if 'key_error' in Item.keys():
             return set()
@@ -83,7 +83,7 @@ class AcroDB():
         message = f"mvtId {Item['mvtId']} successfully inserted to {self.__table_name}"
         return {"message": message}
     
-    def get_item(self, mvtId: str) -> dict:
+    def get_item(self, event: str, mvtId: str) -> dict:
         """
         Gets item from DynamoDB table.
 
@@ -98,7 +98,7 @@ class AcroDB():
             mvtId = str(mvtId)
     
         # Invoke get_item
-        Key = {"mvtId": mvtId}
+        Key = {"event": event,"mvtId": mvtId}
         try:
             response = self.__table.get_item(Key=Key)
         except ClientError as error:
@@ -110,7 +110,7 @@ class AcroDB():
         try:
             return response["Item"]
         except KeyError as error:
-            return {'key_error': f"mvtId '{mvtId}' not in table"}
+            return {'key_error': f"event '{event}', mvtId '{mvtId}' not in table"}
 
     def import_xlsx(self, xlsx_path: str) -> dict:
         """
@@ -127,10 +127,13 @@ class AcroDB():
         df = df.replace({np.nan: None})
 
         # Check columns of xlsx workbook
+        """
+        DEPRECATED: mvtId no longer partition key
         table_attributes: set = self.__get_attributes()
         if table_attributes: # items in table exits -> check attribute alignment
             if set(df.columns) != table_attributes:
                 return {"error_message": "xlsx columns do not align with table's"}
+        """
 
         # Import values by row, invoking insert_value
         for _, row in df.iterrows():
@@ -154,11 +157,11 @@ class AcroDB():
             ExpiresIn=ExpiresIn
         )
 
-    def __insert_s3_url(self, mvtId: str, ext: str) -> dict:
+    def __insert_s3_url(self, event: str, mvtId: str, ext: str) -> dict:
         """Generates and puts S3 url into corresponding Item in DynamoDB table."""
         # Define parameters
-        Key = f"{self.__table_name}/mvtId-{mvtId}{ext}"
-        Item = self.get_item(mvtId=mvtId)
+        Key = f"{self.__table_name}/{event}-{mvtId}{ext}"
+        Item = self.get_item(event=event, mvtId=mvtId)
 
         # Generate URL
         URL = self.__generate_s3_url(Bucket=self.__bucket, Key=Key)
@@ -167,7 +170,7 @@ class AcroDB():
         Item["image_s3_url"] = URL
         return self.__put_item(Item=Item, force=True)
 
-    def __insert_media(self, mvtId: str, media_path: str) -> bool:
+    def __insert_media(self, event: str, mvtId: str, media_path: str) -> bool:
         """Uploads local multimedia into S3 multimedia bucket."""
         # mvtId type check
         if not isinstance(mvtId, str):
@@ -186,14 +189,14 @@ class AcroDB():
             self.__s3_client.upload_file(
                 Filename=media_path, 
                 Bucket=self.__bucket, 
-                Key=f"{self.__table.table_name}/mvtId-{mvtId}{ext}"
+                Key=f"{self.__table.table_name}/{event}-{mvtId}{ext}"
                 )
         except ClientError as e:
             print(e)
             return False
         return True
 
-    def insert_media_and_url(self, mvtId: str, media_path: str) -> dict:
+    def insert_media_and_url(self, event: str, mvtId: str, media_path: str) -> dict:
         """
         Uploads local multimedia into S3 bucket and corresponding Item in DynamoDB table.
         
@@ -206,16 +209,16 @@ class AcroDB():
         # .txt media (hyperlink) -> invoke put_item
         if self.__get_file_extension(media_path) == ".txt":
             with open(media_path, 'r') as file:
-                Item = self.get_item(mvtId=mvtId)
+                Item = self.get_item(event=event, mvtId=mvtId)
                 Item["image_s3_url"] = file.read()
                 return self.__put_item(Item=Item, force=True)
         
         # other multimedia
-        response_1 = self.__insert_media(mvtId=mvtId, media_path=media_path)
+        response_1 = self.__insert_media(event=event, mvtId=mvtId, media_path=media_path)
         if not response_1:
             return None
         ext = self.__get_file_extension(media_path)
-        response_2 = self.__insert_s3_url(mvtId=mvtId, ext=ext)
+        response_2 = self.__insert_s3_url(event=event, mvtId=mvtId, ext=ext)
         return response_2
 
     # Miscellaneous
