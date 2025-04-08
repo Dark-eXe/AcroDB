@@ -1,6 +1,6 @@
 # 🤸‍♂️ AcroDB 🤸
 
-Chat-queried NoSQL database for gymnastics & parkour skills using AWS and OpenAI.<br><br>
+Chat-queried NoSQL database for gymnasts and parkour practitioners.<br><br>
 [![AmazonDynamoDB](https://img.shields.io/badge/Amazon%20DynamoDB-4053D6?style=for-the-badge&logo=Amazon%20DynamoDB&logoColor=white)](https://aws.amazon.com/dynamodb/) [![Amazon S3](https://img.shields.io/badge/Amazon%20S3-FF9900?style=for-the-badge&logo=amazons3&logoColor=white)](https://aws.amazon.com/s3/) [![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
 
 ```
