@@ -77,7 +77,7 @@ function App() {
         {/*header*/}
         <div class="jumbotron">
           <h1 class="display-4 text-warning">Acro<span class="display-4 text-white">DB</span></h1>
-          <p class="lead">Chat-queried NoSQL database for gymnastics & parkour skills using AWS and OpenAI.</p>
+          <p class="lead">Chat-queried NoSQL database for gymnasts and parkour practitioners.</p>
           <hr class="my-4"/>
           <p class="lead">What acrobatic skills are you looking for?</p>
         </div>
