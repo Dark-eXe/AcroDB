@@ -9,7 +9,7 @@ class AcroDB():
     """Interface with AcroDB database AWS DynamoDB table and linked S3 multimedia bucket."""
     # Constructor
     ################################
-    def __init__(self, table_name: str, bucket_name: str=None):
+    def __init__(self, table_name: any="", table: any=None, bucket_name: str=None):
         """
         Initialize AcroDB instance.
 
@@ -17,8 +17,12 @@ class AcroDB():
             table_name (str): DynamoDB table name (required, can be dynamically replaced)
             bucket_name (str): S3 bucket name (default None, can be dynamically replaced)
         """
-        self.__table_name = table_name
-        self.__table = boto3.resource("dynamodb").Table(table_name)
+        if table_name:
+            self.__table_name = table_name
+            self.__table = boto3.resource("dynamodb").Table(table_name)
+        if table:
+            self.__table = table
+            self.__table_name = self.__table.table_name
         self.__bucket = bucket_name
         self.__s3_client = boto3.client('s3')
 
