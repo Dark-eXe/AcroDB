@@ -4,18 +4,7 @@ from pydantic import BaseModel
 from AcroDB import AcroDB
 from ChatDB import ChatDB
 from ChatCache import ChatCache
-
-# AcroDB
-table_name, bucket_name = "MAG_Code-of-Points", "dsci551-acrobucket"
-acro1 = AcroDB(table_name=table_name, bucket_name=bucket_name)
-
-table_name, bucket_name = "Parkourpedia", "dsci551-acrobucket"
-acro2 = AcroDB(table_name=table_name, bucket_name=bucket_name)
-
-# ChatDB
-chat = ChatDB(acrodb_list=[acro1, acro2])
-chat.set_api_key(API_KEY=open("../secrets/API_KEY").read())
-chat.set_prompt(prompt_path="prompts/main.txt")
+from boto3 import Session
 
 # ChatCache
 cache = ChatCache()
@@ -32,14 +21,43 @@ app.add_middleware(
 
 class QueryRequest(BaseModel):
     query: str
+    aws_access_key_id: str
+    aws_secret_access_key: str
+    aws_session_token: str
+    openai_api_key: str
 
 @app.post('/query')
 async def query_chatdb(
-        request: QueryRequest, 
-        page: int = Query(1, alias="page", ge=1),
-        limit: int = Query(5, alias="limit", ge=1, le=50)
-    ):
+    request: QueryRequest, 
+    page: int = Query(1, alias="page", ge=1),
+    limit: int = Query(5, alias="limit", ge=1, le=50)
+):
     """Handles queries from the frontend."""
+
+    # Create a new DynamoDB session for the user's temporary credentials
+    try:
+        session = Session(
+            aws_access_key_id=request.aws_access_key_id,
+            aws_secret_access_key=request.aws_secret_access_key,
+            aws_session_token=request.aws_session_token,
+            region_name="us-east-1"
+        )
+        dynamodb = session.resource("dynamodb")
+    except Exception as e:
+        return {"error": f"Failed to initialize session: {str(e)}"}
+
+
+    # Re-create AcroDB instances using user credentials
+    mag = AcroDB(table=dynamodb.Table("MAG_Code-of-Points"))
+    parkour = AcroDB(table=dynamodb.Table("Parkourpedia"))
+    wag = AcroDB(table=dynamodb.Table("WAG_Code-of-Points"))
+
+    # New ChatDB using the user's OpenAI key
+    chat = ChatDB(acrodb_list=[mag, parkour, wag])
+    chat.set_api_key(API_KEY=request.openai_api_key)
+    chat.set_prompt(prompt_path="prompts/main.txt")
+
+    # Run translation + caching
     response = chat.translate_chat(request.query)
     if response in cache.cache_sequence:
         result = cache.cache_response[response]
@@ -47,12 +65,10 @@ async def query_chatdb(
         result = chat.exec_items(chat.exec_response(response))
         cache.addPair(response=response, result=result)
 
-    # Pagination logic: Slice results
+    # Pagination
     start_idx = (page - 1) * limit
     end_idx = start_idx + limit
     paginated_results = result[start_idx:end_idx]
-
-    # Determine if more results exist
     has_more = end_idx < len(result)
 
     return {"result": paginated_results, "has_more": has_more}
