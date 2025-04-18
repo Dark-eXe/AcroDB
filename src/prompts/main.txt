@@ -7,16 +7,19 @@ Rules:
 4. There are only 3 tables: Men's Artistic Gymnastics Code of Points (or MAG), Women's Artistic Gymnastics Code of Points (or WAG), and the Parkour dictionary (or Parkourpedia).
 5. DynamoDB tables should only be referenced using this syntax: acrodb_ref[<table_name>].
 6. Only possible values for <table_name> are "MAG_Code-of-Points", "WAG_Code-of-Points", and "Parkourpedia".
-7. For MAG and Parkourpedia tables, the key schema is:
+7. For MAG, WAG, and Parkourpedia tables, the key schema is:
    - Partition key: "event"
    - Sort key: "mvtId" (movement ID, stored as string integers like "1", "2", ..., "204")
 8. Possible "event" values:
-   - For MAG: "MAG Floor", "MAG Pommel Horse", "MAG Rings"
+   - For MAG: "MAG Floor", "MAG Pommel Horse", "MAG Rings", "MAG Vault"
+   - For WAG: "WAG Vault"
    - For Parkourpedia: "Wall", "Vault", "Landing", "Bar", "Flip"
-9. In gymnastics, difficulty 'A' or value '0.1' is easy, 'B' or '0.2' is intermediate, 'C' or '0.3' is difficult, up to 'J' or '1.0' being the most difficult.
+9. In gymnastics (except vault events), difficulty 'A' or value '0.1' is easy, 'B' or '0.2' is intermediate, 'C' or '0.3' is difficult, up to 'J' or '1.0' being the most difficult.
+   - For vault events, value below '2.0' is easy, then below '3.0' for intermediate, '4.0' for difficult, up to around '6.0' being the most difficult.
 10. Attributes in Parkourpedia: 'event', 'name', 'difficulty', 'description', 'image_s3_url'
 11. 'difficulty' in Parkourpedia: 'Situational', 'Beginner', 'Intermediate', 'Advanced'
-12. Attributes in MAG/WAG: 'event', 'group', 'name', 'difficulty', 'value', 'image_s3_url'
+12. Attributes in MAG/WAG (except vault events): 'event', 'mvtId', 'group', 'name', 'difficulty', 'value', 'image_s3_url'
+   - For vault events: the same except no 'difficulty' which is instead implied in 'value'
 13. Output None for non-possibilities, including modifications based on attributes not listed in rules 10 and 12.
 14. Use prefix "acrodb_ref" instead of "self.__acrodb_ref" for pipelining reasons.
 15. When using ProjectionExpression, alias reserved keywords like "name" or "event" using ExpressionAttributeNames.
@@ -24,7 +27,7 @@ Rules:
 17. Queries for multiple tables (or natural groupings within tables) can be combined by adding the results.
 18. Use Decimal(str('<value>')) when referencing numeric values in MAG/WAG.
 19. Return "Sort key not yet supported" if asked to sort by unsupported attributes.
-20. Well-known tricks (e.g., parkour backflip → event Flip, mvtId 1) may be mapped to specific queries.
+20. Well-known tricks (e.g., parkour backflip → event 'Flip', mvtId '1') may be mapped to specific queries.
 
 Example inputs and outputs:
 
@@ -58,7 +61,7 @@ Output: acrodb_ref["MAG_Code-of-Points"].delete_item(Key={{'event': 'MAG Floor',
 Input: "Update MAG Floor mvtId 64 name to 'New Skill Name'"
 Output: acrodb_ref["MAG_Code-of-Points"].update_item(Key={{'event': 'MAG Floor', 'mvtId': '64'}}, UpdateExpression="SET #n = :n", ExpressionAttributeNames={{'#n': 'name'}}, ExpressionAttributeValues={{':n': 'New Skill Name'}}, ConditionExpression="attribute_exists(mvtId)")
 
-Input: "Add mvtId 12 to Vault with name 'Dash vault'"
+Input: "Add mvtId 12 to Parkour Vault with name 'Dash vault'"
 Output: acrodb_ref["Parkourpedia"].put_item(Item={{'event': 'Vault', 'mvtId': '12', 'name': 'Dash vault'}}, ConditionExpression='attribute_not_exists(mvtId)')
 
 Input: "Find backflip in parkour"
@@ -77,7 +80,7 @@ Input: "Show me the names of difficult acrobatic skills in Parkour and men's gym
 Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('difficulty').gte('C'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})['Items'] + acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('difficulty').eq('Advanced'), ProjectionExpression='#name', ExpressionAttributeNames={{'#name': 'name'}})['Items']}}
 
 Input: "Show me all acrobatic skills."
-Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan()['Items'] + acrodb_ref["Parkourpedia"].scan()['Items']}}
+Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan()['Items'] + acrodb_ref["WAG_Code-of-Points"].scan()['Items'] + acrodb_ref["Parkourpedia"].scan()['Items']}}
 
 Input: "Show me parkour table in detail."
 Output: boto3.client('dynamodb').describe_table(TableName='Parkourpedia')
