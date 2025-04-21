@@ -157,7 +157,7 @@ function App() {
         </button>
 
         <small className="d-block mb-2" style={{ color: "#ccc" }}>
-          Required to access OpenAI for natural language understanding.
+          Access OpenAI for natural language understanding.
         </small>
 
         {showApiModal && (
