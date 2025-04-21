@@ -9,7 +9,7 @@ import os
 import boto3
 from boto3.dynamodb.conditions import Attr, Key
 from botocore.exceptions import ClientError
-from openai import OpenAI, RateLimitError
+from openai import OpenAI, RateLimitError, AuthenticationError
 
 from decimal import Decimal
 import itertools
@@ -139,7 +139,10 @@ class ChatDB():
                 messages=self.__chat_log[-3:] if len(self.__chat_log) > 3 else self.__chat_log
             )
         except RateLimitError as error:
-            print(f"Rate Limit Error: {error}")
+            print(error)
+            return error
+        except AuthenticationError as error:
+            print(error)
             return error
         
         # response
@@ -153,10 +156,13 @@ class ChatDB():
     
     def exec_response(self, response: str="") -> any:
         """Execute chat-queried response using eval() or return appropriate response."""
-        if response.startswith("Output: "): # defensive: prompt takes example outputs literally
-            response = response[8:]
         if isinstance(response, RateLimitError):
-            return response
+            return ["OpenAI Rate Limit reached"]
+        if isinstance(response, AuthenticationError):
+            return ["Invalid OpenAI API key"]
+        if isinstance(response, str) and response.startswith("Output: "): # defensive: prompt takes example outputs literally
+            response = response[8:]
+            
         try:
             return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr, "Decimal": Decimal, "boto3": boto3, "itertools": itertools})
         except SyntaxError as error:
