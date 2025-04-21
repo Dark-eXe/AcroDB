@@ -7,12 +7,20 @@ function App() {
   const [response, setResponse] = useState([]);
   const [page, setPage] = useState(1); // current page
   const [hasMore, setHasMore] = useState(false);
+  const [openaiKey, setOpenaiKey] = useState(sessionStorage.getItem("openai_api_key") || "");
+  const [showApiModal, setShowApiModal] = useState(false);
+
+  const handleSaveApiKey = () => {
+    sessionStorage.setItem("openai_api_key", openaiKey);
+    setShowApiModal(false);
+  };
 
   const fetchResults = async (newPage) => {
+    const openaiKey = sessionStorage.getItem("openai_api_key") || "";
     const response = await fetch(`http://127.0.0.1:8000/query?page=${newPage}&limit=5`, {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ query })
+      body: JSON.stringify({ query, openai_api_key: openaiKey })
     });
     const data = await response.json();
 
@@ -63,6 +71,7 @@ function App() {
     }
   };
   
+  const disabled = !query.trim() || !openaiKey;
 
   return (
     <div>
@@ -79,8 +88,53 @@ function App() {
           <h1 class="display-4 text-warning">Acro<span class="display-4 text-white">DB</span></h1>
           <p class="lead">Chat-queried NoSQL database for gymnasts and parkour practitioners.</p>
           <hr class="my-4"/>
-          <p class="lead">What acrobatic skills are you looking for?</p>
         </div>
+
+        <button
+          className={`btn mb-2 ${openaiKey ? "btn-outline-success" : "btn-outline-warning"}`}
+          onClick={() => setShowApiModal(true)}
+        >
+          🔐 {openaiKey ? "OpenAI Key Set" : "Set OpenAI API Key"}
+        </button>
+
+        <small className="d-block mb-2" style={{ color: "#ccc" }}>
+          Access OpenAI for natural language understanding.
+        </small>
+
+        {showApiModal && (
+          <div className="modal show fade d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)", overflow: "hidden" }}>
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content bg-dark text-white">
+                <div className="modal-header">
+                  <h5 className="modal-title">Enter OpenAI API Key</h5>
+                  <button type="button" className="btn-close btn-close-white" onClick={() => setShowApiModal(false)}></button>
+                </div>
+                <div className="modal-body">
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="OpenAI API Key"
+                    value={openaiKey}
+                    onChange={(e) => setOpenaiKey(e.target.value)}
+                  />
+                </div>
+                <div className="modal-footer">
+                  <button className="btn btn-secondary" onClick={() => setShowApiModal(false)}>Cancel</button>
+                  <button className="btn btn-primary" onClick={handleSaveApiKey}>Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div style={{
+          width: "75%",
+          height: "1px",
+          backgroundColor: "#ccc",
+          opacity: 0.7,
+          margin: "1rem 0"
+        }} />
+        <p className="lead">What acrobatic skills are you looking for?</p>
 
         {/*query*/}
         <div className="">
@@ -93,7 +147,7 @@ function App() {
               onChange={(event) => setQuery(event.target.value)} 
               className="form-control form-control-sm w-100"
             />
-            <button type="submit" className="btn btn-outline-light ms-2 " disabled={!query.trim()}>
+            <button type="submit" className="btn btn-outline-light ms-2 " disabled={disabled}>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
               </svg>

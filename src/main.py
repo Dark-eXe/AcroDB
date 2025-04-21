@@ -5,18 +5,6 @@ from AcroDB import AcroDB
 from ChatDB import ChatDB
 from ChatCache import ChatCache
 
-# AcroDB
-table_name, bucket_name = "MAG_Code-of-Points", "dsci551-acrobucket"
-acro1 = AcroDB(table_name=table_name, bucket_name=bucket_name)
-
-table_name, bucket_name = "Parkourpedia", "dsci551-acrobucket"
-acro2 = AcroDB(table_name=table_name, bucket_name=bucket_name)
-
-# ChatDB
-chat = ChatDB(acrodb_list=[acro1, acro2])
-chat.set_api_key(API_KEY=open("../secrets/API_KEY").read())
-chat.set_prompt(prompt_path="prompts/main.txt")
-
 # ChatCache
 cache = ChatCache()
 
@@ -32,6 +20,7 @@ app.add_middleware(
 
 class QueryRequest(BaseModel):
     query: str
+    openai_api_key: str
 
 @app.post('/query')
 async def query_chatdb(
@@ -39,6 +28,22 @@ async def query_chatdb(
         page: int = Query(1, alias="page", ge=1),
         limit: int = Query(5, alias="limit", ge=1, le=50)
     ):
+    # AcroDB
+    table_name, bucket_name = "MAG_Code-of-Points", "dsci551-acrobucket"
+    acro1 = AcroDB(table_name=table_name, bucket_name=bucket_name)
+
+    table_name, bucket_name = "Parkourpedia", "dsci551-acrobucket"
+    acro2 = AcroDB(table_name=table_name, bucket_name=bucket_name)
+
+    table_name, bucket_name = "WAG_Code-of-Points", "dsci551-acrobucket"
+    acro3 = AcroDB(table_name=table_name, bucket_name=bucket_name)
+
+    # ChatDB
+    chat = ChatDB(acrodb_list=[acro1, acro2, acro3])
+    #chat.set_api_key(API_KEY=open("../secrets/API_KEY").read())
+    chat.set_api_key(API_KEY=request.openai_api_key)
+    chat.set_prompt(prompt_path="prompts/main.txt")
+
     """Handles queries from the frontend."""
     response = chat.translate_chat(request.query)
     if response in cache.cache_sequence:
