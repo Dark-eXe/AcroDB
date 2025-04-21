@@ -44,7 +44,9 @@ async def query_chatdb(
         )
         dynamodb = session.resource("dynamodb")
     except Exception as e:
-        return {"error": f"Failed to initialize session: {str(e)}"}
+        import logging
+        logging.error(f"Failed to initialize session: {str(e)}")
+        return {"error": "An internal error occurred. Please try again later."}
 
 
     # Re-create AcroDB instances using user credentials
