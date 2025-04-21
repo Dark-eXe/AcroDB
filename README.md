@@ -42,7 +42,7 @@ Uses `ChatDB.loop()`
 
 ## 🧠 Tech Stack 🤖
 
-- AWS NoSQL Database Services with Boto3: DynamoDB, S3 \*_\*\*requires AWS client permissions for access (closed to public for now)_
+- AWS NoSQL Database Services with Boto3: DynamoDB, S3
 - OpenAI with Python SDK \*_\*\*requires API key for token usage_
 
 ## 🗄️ Database Contents 🗄️
