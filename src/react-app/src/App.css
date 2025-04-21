@@ -12,6 +12,15 @@ body {
   margin: 0;
 }
 
+hr {
+  border: none; /* Remove any existing border styles */
+  border-top: 1px solid #ccc !important; /* Light color with force */
+  margin: 1.5rem 0; /* Padding above and below */
+  opacity: 1; /* Override Bootstrap's opacity */
+  position: relative;
+  z-index: 1;
+}
+
 .container {
   max-width: 600px; /* Limits container width */
   width: 100%; /* Keeps responsiveness */
