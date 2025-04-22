@@ -134,6 +134,10 @@ function App() {
           <hr className="my-4" />
         </div>
 
+        <small className="d-block mb-2" style={{ color: "#ccc" }}>
+          Access database with AWS and OpenAI.
+        </small>
+
         {!creds.accessKeyId && (
           <button className="btn btn-success mb-3" onClick={handleLogin}>
             Login with AWS Cognito
@@ -141,24 +145,15 @@ function App() {
         )}
 
         {creds.accessKeyId && (
-          <div className="text-success mb-3">✅ Logged in via AWS Cognito</div>
-        )}
-
-        {/* Warning if not logged in */}
-        {!creds.accessKeyId && (
-          <div className="text-warning mb-2">⚠️ Please log in and enter your OpenAI key to run queries.</div>
+          <div className="text-success mb-3">Logged in via AWS Cognito</div>
         )}
 
         <button
           className={`btn mb-2 ${openaiKey ? "btn-outline-success" : "btn-outline-warning"}`}
           onClick={() => setShowApiModal(true)}
         >
-          🔐 {openaiKey ? "OpenAI Key Set" : "Set OpenAI API Key"}
+          {openaiKey ? "OpenAI set" : "Set OpenAI API Key"}
         </button>
-
-        <small className="d-block mb-2" style={{ color: "#ccc" }}>
-          Access OpenAI for natural language understanding.
-        </small>
 
         {showApiModal && (
           <div className="modal show fade d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)", overflow: "hidden" }}>
