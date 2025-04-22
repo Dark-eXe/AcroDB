@@ -12,10 +12,11 @@ Rules:
    - Sort key: "mvtId" (movement ID, stored as string integers like "1", "2", ..., "204")
 8. Possible "event" values:
    - For MAG: "MAG Floor", "MAG Pommel Horse", "MAG Rings", "MAG Vault"
-   - For WAG: "WAG Vault"
+   - For WAG: "WAG Vault", "WAG Uneven Bars"
    - For Parkourpedia: "Wall", "Vault", "Landing", "Bar", "Flip"
 9. In gymnastics (except vault events), difficulty 'A' or value '0.1' is easy, 'B' or '0.2' is intermediate, 'C' or '0.3' is difficult, up to 'J' or '1.0' being the most difficult.
    - For vault events, value below '2.0' is easy, then below '3.0' for intermediate, '4.0' for difficult, up to around '6.0' being the most difficult.
+   - For WAG (except vault), anything 'F' or above is considered most difficult
 10. Attributes in Parkourpedia: 'event', 'name', 'difficulty', 'description', 'image_s3_url'
 11. 'difficulty' in Parkourpedia: 'Situational', 'Beginner', 'Intermediate', 'Advanced'
 12. Attributes in MAG/WAG (except vault events): 'event', 'mvtId', 'group', 'name', 'difficulty', 'value', 'image_s3_url'
@@ -28,10 +29,19 @@ Rules:
 18. Use Decimal(str('<value>')) when referencing numeric values in MAG/WAG.
 19. Return "Sort key not yet supported" if asked to sort by unsupported attributes.
 20. Well-known tricks (e.g., parkour backflip → event 'Flip', mvtId '1') may be mapped to specific queries.
+21. User can ask to generate sample query translations. Output string surrounded by double-quotes only.
+22. If directly input as acrodb_ref syntax, output the same.
+23. For pure sample queries, output as list of items.
 
 Example inputs and outputs:
 
 Input: "Get me skill ID 1 from MAG Floor."
+Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('event').eq('MAG Floor') & Key('mvtId').eq('1'))
+
+Input: "Could you generate a query to get skill 1 from MAG Floor?"
+Output: "acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('event').eq('MAG Floor') & Key('mvtId').eq('1'))"
+
+Input: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('event').eq('MAG Floor') & Key('mvtId').eq('1'))
 Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('event').eq('MAG Floor') & Key('mvtId').eq('1'))
 
 Input: "Find all beginner parkour skills."
@@ -42,6 +52,9 @@ Output: ", ".join(list(acrodb_ref.keys()))
 
 Input: "How many moves are listed in MAG?"
 Output: acrodb_ref["MAG_Code-of-Points"].scan(Select='COUNT')['Count']
+
+Input: "Show me parkour skills with pictures."
+Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('image_s3_url').exists() & Attr('image_s3_url').ne(None) & Attr('image_s3_url').gt(''))
 
 Input: "Show me difficult vault skills in parkour."
 Output: acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('difficulty').eq('Advanced') & Attr('event').eq('Vault'))
@@ -68,7 +81,7 @@ Input: "Find backflip in parkour"
 Output: acrodb_ref["Parkourpedia"].query(KeyConditionExpression=Key('event').eq('Flip') & Key('mvtId').eq('1'))
 
 Input: "Show me the counts of all difficulties in parkour minus advanced."
-Output: ", ".join([f"{{x}}: {{sum([acrodb_ref['Parkourpedia'].query(KeyConditionExpression=Key('event').eq(evt) & Attr('difficulty').eq(x), Select='COUNT')['Count'] for evt in ['Wall', 'Vault', 'Landing', 'Bar', 'Flip']])}}" for x in ['Situational', 'Beginner', 'Intermediate']])
+Output: ", ".join([f"{{x}}: {{sum([acrodb_ref['Parkourpedia'].query(KeyConditionExpression=Key('event').eq(evt), FilterExpression=Attr('difficulty').eq(x), Select='COUNT')['Count'] for evt in ['Wall', 'Vault', 'Landing', 'Bar', 'Flip']])}}" for x in ['Situational', 'Beginner', 'Intermediate']])
 
 Input: "Show me counts of all parkour skills grouped by difficulty."
 Output: ", ".join([f"{{x}}: {{sum([acrodb_ref['Parkourpedia'].scan(FilterExpression=Attr('difficulty').eq(x) & Attr('event').eq(evt), Select='COUNT')['Count'] for evt in ['Wall', 'Vault', 'Landing', 'Bar', 'Flip']])}}" for x in ['Situational', 'Beginner', 'Intermediate', 'Advanced']])
@@ -84,5 +97,11 @@ Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan()['Items'] + acrodb_ref
 
 Input: "Show me parkour table in detail."
 Output: boto3.client('dynamodb').describe_table(TableName='Parkourpedia')
+
+Input: "All skills with any type of multimedia attached."
+Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('image_s3_url').exists() & Attr('image_s3_url').ne(None) & Attr('image_s3_url').gt(''))['Items'] + acrodb_ref["WAG_Code-of-Points"].scan(FilterExpression=Attr('image_s3_url').exists() & Attr('image_s3_url').ne(None) & Attr('image_s3_url').gt(''))['Items'] + acrodb_ref["Parkourpedia"].scan(FilterExpression=Attr('image_s3_url').exists() & Attr('image_s3_url').ne(None) & Attr('image_s3_url').gt(''))['Items']}}
+
+Input: "What are some things I can ask?"
+Output: {{"Items": ["I'd like to see a parkour backflip!", "Show the MAG table in detail.", "What are some beginner skills in Men's Gymnastics?", ""Show me the counts of all difficulties in parkour minus advanced.""]}}
 
 Now convert this: "{}"
