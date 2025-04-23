@@ -163,19 +163,38 @@ class ChatDB():
         if isinstance(response, str) and response.startswith("Output: "): # defensive: prompt takes example outputs literally
             response = response[8:]
             
-        try:
-            return eval(response, {"acrodb_ref": self.__acrodb_ref, "Key": Key, "Attr": Attr, "Decimal": Decimal, "boto3": boto3, "itertools": itertools})
-        except SyntaxError as error:
-            print(f"response: {response}")
-            return f"Syntax Error: {error}"
-        except AttributeError as error:
-            return f"Attribute Error: {error}"
-        except NameError as error:
-            return f"Name Error: {error}"
-        except ClientError as error:
-            if error.response['Error']['Code'] == 'ConditionalCheckFailedException':
-                return("Invalid data modification.")
-            return f"Client Error: {error}"
+        allowed_globals = {
+            "acrodb_ref": self.__acrodb_ref,
+            "Key": Key,
+            "Attr": Attr,
+            "Decimal": Decimal,
+            "boto3": boto3,
+            "itertools": itertools,
+        }
+
+        # Use exec for multiline batch operations
+        if response.strip().startswith("with"):
+            try:
+                exec_locals = {}
+                exec(response, allowed_globals, exec_locals)
+                return {"ResponseMetadata": {"HTTPStatusCode": 200}}
+            except Exception as error:
+                return f"Execution Error: {error}"
+        else:
+            try:
+                return eval(response, allowed_globals)
+            except SyntaxError as error:
+                print(f"response: {response}")
+                return f"Syntax Error: {error}"
+            except AttributeError as error:
+                return f"Attribute Error: {error}"
+            except NameError as error:
+                return f"Name Error: {error}"
+            except ClientError as error:
+                if error.response['Error']['Code'] == 'ConditionalCheckFailedException':
+                    return "Invalid data modification."
+                return f"Client Error: {error}"
+
         
     def exec_items(self, exec_response: any=None) -> any:
         """Display exec_response so that Items are displayed in tabular form."""
