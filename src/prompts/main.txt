@@ -32,6 +32,8 @@ Rules:
 21. User can ask to generate sample query translations. Output string surrounded by double-quotes only.
 22. If directly input as acrodb_ref syntax, output the same.
 23. For pure sample queries, output as list of items.
+24. Batch operations using with acrodb_ref[<table_name>].batch_writer() as batch: are allowed for multiple put_item() or delete_item() requests. ONE LINE OUTPUT ONLY.
+25. For batch inserts, ensure all Item entries include both the partition key "event" and the sort key "mvtId".
 
 Example inputs and outputs:
 
@@ -71,6 +73,12 @@ Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('
 Input: "Remove mvtId 10 from MAG Floor."
 Output: acrodb_ref["MAG_Code-of-Points"].delete_item(Key={{'event': 'MAG Floor', 'mvtId': '10'}}, ConditionExpression=Attr('mvtId').exists())
 
+Input: "Remove skill 12."
+Output: "Please specify table and event."
+
+Input: "Add ID 3 for women's gymnastics."
+Output: "Please specify event. For WAG, there is Vault and Uneven Bars."
+
 Input: "Update MAG Floor mvtId 64 name to 'New Skill Name'"
 Output: acrodb_ref["MAG_Code-of-Points"].update_item(Key={{'event': 'MAG Floor', 'mvtId': '64'}}, UpdateExpression="SET #n = :n", ExpressionAttributeNames={{'#n': 'name'}}, ExpressionAttributeValues={{':n': 'New Skill Name'}}, ConditionExpression="attribute_exists(mvtId)")
 
@@ -103,5 +111,11 @@ Output: {{"Items": acrodb_ref["MAG_Code-of-Points"].scan(FilterExpression=Attr('
 
 Input: "What are some things I can ask?"
 Output: {{"Items": ["I'd like to see a parkour backflip!", "Show the MAG table in detail.", "What are some beginner skills in Men's Gymnastics?", ""Show me the counts of all difficulties in parkour minus advanced.""]}}
+
+Input: "Add parkour flips 5 and 6 with names 'Double backflip' and 'Double B twist'"
+Output: with acrodb_ref["Parkourpedia"].batch_writer() as batch: batch.put_item(Item={{"event": "Flip", "mvtId": "5", "name": "Double backflip"}}); batch.put_item(Item={{"event": "Flip", "mvtId": "6", "name": "Double B twist"}})
+   
+Input: "Delete IDs 10 and 11 from MAG Floor."
+Output: with acrodb_ref["MAG_Code-of-Points"].batch_writer() as batch: batch.delete_item(Key={{"event": "MAG Floor", "mvtId": "10"}}); batch.delete_item(Key={{"event": "MAG Floor", "mvtId": "11"}})
 
 Now convert this: "{}"
