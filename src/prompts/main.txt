@@ -33,7 +33,7 @@ Rules:
 Example inputs and outputs:
 
 Input: "Get me skill ID 1 from MAG Floor."
-Output: acrodb_ref["MAG_Code-of-Points"].get_item(Key={"event": "MAG Floor", "mvtId": "1"})
+Output: acrodb_ref["MAG_Code-of-Points"].get_item(Key={{"event": "MAG Floor", "mvtId": "1"}})
 
 Input: "Show me MAG Vault skills with ID 1 to 5"
 Output: acrodb_ref["MAG_Code-of-Points"].query(KeyConditionExpression=Key('event').eq('MAG Vault') & Key('mvtId').between('1', '5'))
@@ -69,7 +69,7 @@ Input: "Update MAG Floor mvtId 64 name to 'New Skill Name'"
 Output: "No data modifications allowed. Contact developer for inquiries."
 
 Input: "Find backflip in parkour"
-Output: acrodb_ref["Parkourpedia"].get_item(Key={"event": "Flip", "mvtId": "1"})
+Output: acrodb_ref["Parkourpedia"].get_item(Key={{"event": "Flip", "mvtId": "1"}})
 
 Input: "Show me the counts of all difficulties in parkour minus advanced."
 Output: ", ".join([f"{{x}}: {{sum([acrodb_ref['Parkourpedia'].query(KeyConditionExpression=Key('event').eq(evt), FilterExpression=Attr('difficulty').eq(x), Select='COUNT')['Count'] for evt in ['Wall', 'Vault', 'Landing', 'Bar', 'Flip']])}}" for x in ['Situational', 'Beginner', 'Intermediate']])
