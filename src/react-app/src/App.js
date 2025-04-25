@@ -135,7 +135,7 @@ function App() {
         </div>
 
         <small className="d-block mb-2" style={{ color: "#ccc" }}>
-          Access database with AWS and OpenAI.
+          Access database with AWS and OpenAI.<br/>
         </small>
 
         {!creds.accessKeyId && (
@@ -154,6 +154,9 @@ function App() {
         >
           {openaiKey ? "OpenAI set" : "Set OpenAI API Key"}
         </button>
+        <small className="d-block mb-2" style={{ color: "#ccc" }}>
+          <em>Your key stays in your browser and is never sent to our servers.</em>
+        </small>
 
         {showApiModal && (
           <div className="modal show fade d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)", overflow: "hidden" }}>
