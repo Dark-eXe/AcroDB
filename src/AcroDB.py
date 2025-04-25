@@ -47,15 +47,6 @@ class AcroDB():
 
     # DB Interactions
     ################################
-    def __get_attributes(self) -> set:
-        """DEPRECATED: Get set of attributes in table."""
-        Item = self.get_item(mvtId='1')
-        if 'key_error' in Item.keys():
-            return set()
-        if 'client_error' in Item.keys():
-            raise Exception("Error retrieving attributes from table:", Item)
-        return set(Item.keys())
-    
     def __put_item(self, Item: dict, force: bool=False) -> dict:
         """
         Puts item in DynamoDB table.
@@ -130,15 +121,6 @@ class AcroDB():
         # Read xlsx as df
         df = pd.read_excel(xlsx_path)
         df = df.replace({np.nan: None})
-
-        # Check columns of xlsx workbook
-        """
-        DEPRECATED: mvtId no longer partition key
-        table_attributes: set = self.__get_attributes()
-        if table_attributes: # items in table exits -> check attribute alignment
-            if set(df.columns) != table_attributes:
-                return {"error_message": "xlsx columns do not align with table's"}
-        """
 
         # Import values by row, invoking insert_value
         for _, row in df.iterrows():

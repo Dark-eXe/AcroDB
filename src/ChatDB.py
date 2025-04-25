@@ -172,28 +172,19 @@ class ChatDB():
             "itertools": itertools,
         }
 
-        # Use exec for multiline batch operations
-        if response.strip().startswith("with"):
-            try:
-                exec_locals = {}
-                exec(response, allowed_globals, exec_locals)
-                return {"ResponseMetadata": {"HTTPStatusCode": 200}}
-            except Exception as error:
-                return f"Execution Error: {error}"
-        else:
-            try:
-                return eval(response, allowed_globals)
-            except SyntaxError as error:
-                print(f"response: {response}")
-                return f"Syntax Error: {error}"
-            except AttributeError as error:
-                return f"Attribute Error: {error}"
-            except NameError as error:
-                return f"Name Error: {error}"
-            except ClientError as error:
-                if error.response['Error']['Code'] == 'ConditionalCheckFailedException':
-                    return "Invalid data modification."
-                return f"Client Error: {error}"
+        try:
+            return eval(response, allowed_globals)
+        except SyntaxError as error:
+            print(f"response: {response}")
+            return f"Syntax Error: {error}"
+        except AttributeError as error:
+            return f"Attribute Error: {error}"
+        except NameError as error:
+            return f"Name Error: {error}"
+        except ClientError as error:
+            if error.response['Error']['Code'] == 'ConditionalCheckFailedException':
+                return "Invalid data modification."
+            return f"Client Error: {error}"
 
         
     def exec_items(self, exec_response: any=None) -> any:
@@ -205,6 +196,8 @@ class ChatDB():
                 return [str(element) for element in exec_response]
             return [str(exec_response)]
 
+        if "Item" in exec_response:
+            return [exec_response["Item"]]
         if "Items" in exec_response:
             items_output = [item for item in exec_response["Items"]]
             return items_output if items_output else ["No matching items found."]
@@ -224,7 +217,6 @@ class ChatDB():
         
         # Fallback case for unknown structures
         return [str(exec_response)]
-
 
     # CLI Pipeline
     ################################
