@@ -38,7 +38,7 @@ AcroDB
 ## Command-Line Interface
 
 Uses `ChatDB.loop()`<br>
-See `src/chat_query.ipynb`
+See `demo/chat_query.ipynb`
 ![image](https://github.com/user-attachments/assets/dcad7bb3-b835-4881-9680-c821f3d8d694)
 
 ## 🔒 Access 🔒
