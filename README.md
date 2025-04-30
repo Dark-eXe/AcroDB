@@ -13,6 +13,7 @@ AcroDB
 │   ├── AcroDB.py
 │   ├── ChatDB.py
 │   ├── main.py
+│   ├── ChatCache.py
 │   ├── prompts
 │   │   └── main.txt
 │   └── react-app
@@ -25,36 +26,15 @@ AcroDB
     └── test_AcroDB.py
 ```
 
-## 👷‍♂️ Progress 👷‍♀️
-
-#### Web Interface
+## Web Interface
 
 [![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
-![Snip20250323_34](https://github.com/user-attachments/assets/1b3a4d37-ee99-4307-af37-a0c1dbfab4d6)
-<br>
-![Snip20250325_20](https://github.com/user-attachments/assets/15a106e3-4364-4876-8585-68c043c0f6b3)
+![demo](https://github.com/user-attachments/assets/3ca1c32b-cab8-4441-a7c4-a6673c46fb1c)
 
-#### Command-Line Interface
+## 🏛️ Ecosystem  🏛️
+![Flowchart](https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138)
 
-Uses `ChatDB.loop()`
-![image](https://github.com/user-attachments/assets/dcad7bb3-b835-4881-9680-c821f3d8d694)
-
-## 🧠 Tech Stack 🤖
-
-- AWS NoSQL Database Services with Boto3: DynamoDB, S3
-- OpenAI with Python SDK \*_\*\*requires API key for token usage_
-
-## 🗄️ Database Contents 🗄️
-
-DynamoDB: MAG Code of Points, WAG Code of Points, Parkour dictionary
-
-> partition key: 'event'
-> sort key: 'mvtId'
-
-S3: Multimedia for movement demonstrations
-
-> key: '<dynamodb_table>/\<event\>-\<mvtId\>.\<multimedia_extension\>'
 
 ## License
 
