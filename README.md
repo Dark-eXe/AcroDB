@@ -13,6 +13,7 @@ AcroDB
 │   ├── AcroDB.py
 │   ├── ChatDB.py
 │   ├── main.py
+│   ├── ChatCache.py
 │   ├── prompts
 │   │   └── main.txt
 │   └── react-app
@@ -25,36 +26,34 @@ AcroDB
     └── test_AcroDB.py
 ```
 
-## 👷‍♂️ Progress 👷‍♀️
-
-#### Web Interface
+## Web Interface
 
 [![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
-![Snip20250323_34](https://github.com/user-attachments/assets/1b3a4d37-ee99-4307-af37-a0c1dbfab4d6)
-<br>
-![Snip20250325_20](https://github.com/user-attachments/assets/15a106e3-4364-4876-8585-68c043c0f6b3)
+![demo](https://github.com/user-attachments/assets/3ca1c32b-cab8-4441-a7c4-a6673c46fb1c)
 
-#### Command-Line Interface
+## 🏛️ Ecosystem  🏛️
+![Flowchart](https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138)
 
-Uses `ChatDB.loop()`
+## Command-Line Interface
+
+Uses `ChatDB.loop()`<br>
+See `src/chat_query.ipynb`
 ![image](https://github.com/user-attachments/assets/dcad7bb3-b835-4881-9680-c821f3d8d694)
 
-## 🧠 Tech Stack 🤖
+## 🔒 Access 🔒
+Frameworks/tools: Python (`requirements.txt`), [React](https://www.freecodecamp.org/news/how-to-install-react-a-step-by-step-guide/) (Node.js, npm, [Bootstrap](https://getbootstrap.com/docs/3.4/getting-started/))<br><Br>
+AWS: login/signup through AWS Cognito in web browser <br>
+OpenAI: enter API key in web browser<br><br>
 
-- AWS NoSQL Database Services with Boto3: DynamoDB, S3
-- OpenAI with Python SDK \*_\*\*requires API key for token usage_
+If in admin mode and running CLI, [set up AWS CLI configuration](https://docs.aws.amazon.com/cli/v1/userguide/cli-chap-configure.html) in terminal and paste OpenAI API key in a new directory `secrets/API_KEY` (or edit line $27$ in `demo/chat_query.py` or cell $6$ in `demo/chat_query.ipynb`).<br><br>
+*Note: you still will not be able to access resources unless you are in my user pool in Cognito... or you are me, so you would need to launch the web page on localhost (run `npm start` on `src/react-app`) and sign up with Cognito... by that point, you should just use the web page since you are obviously not an admin*
 
-## 🗄️ Database Contents 🗄️
-
-DynamoDB: MAG Code of Points, WAG Code of Points, Parkour dictionary
-
-> partition key: 'event'
-> sort key: 'mvtId'
-
-S3: Multimedia for movement demonstrations
-
-> key: '<dynamodb_table>/\<event\>-\<mvtId\>.\<multimedia_extension\>'
+## Steps
+1. Install tools and ensure proper configuration from above
+2. From `src/` run `uvicorn main:app --reload` to launch FastAPI server
+3. From `src/react-app/` run `npm start` to launch web server
+4. Go to localhost:3000 in web browser
 
 ## License
 
