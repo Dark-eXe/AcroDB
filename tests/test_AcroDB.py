@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
-from src.AcroDB import AcroDB
+from src.AcroDB.AcroDB import AcroDB
 
 def test_constructor(mock_acrodb):
     assert mock_acrodb is not None

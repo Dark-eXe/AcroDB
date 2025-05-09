@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from src.AcroDB import AcroDB
+from src.AcroDB.AcroDB import AcroDB
 
 @pytest.fixture
 def table_name():
@@ -12,7 +12,7 @@ def bucket_name():
 
 @pytest.fixture
 def mock_acrodb(table_name, bucket_name):
-    with patch("src.AcroDB.boto3") as mock_boto:
+    with patch("src.AcroDB.AcroDB.boto3") as mock_boto:
         # Mock DynamoDB Table
         mock_dynamodb = mock_boto.resource.return_value
         mock_table = mock_dynamodb.Table.return_value
