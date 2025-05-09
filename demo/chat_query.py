@@ -5,14 +5,14 @@ if module_path not in sys.path:
     sys.path.append(module_path)
 
 try:
-    from src.AcroDB import AcroDB
-    from src.ChatDB import ChatDB
+    from src.AcroDB.AcroDB import AcroDB
+    from src.AcroDB.ChatDB import ChatDB
 except ModuleNotFoundError:
     module_path = os.path.abspath(os.path.join('.'))
     if module_path not in sys.path:
         sys.path.append(module_path)
-    from src.AcroDB import AcroDB
-    from src.ChatDB import ChatDB
+    from src.AcroDB.AcroDB import AcroDB
+    from src.AcroDB.ChatDB import ChatDB
 
 def main():
     # AcroDB
