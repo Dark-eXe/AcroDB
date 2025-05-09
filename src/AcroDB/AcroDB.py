@@ -176,12 +176,16 @@ class AcroDB():
             self.__s3_client.upload_file(
                 Filename=media_path, 
                 Bucket=self.__bucket, 
-                Key=f"{self.__table.table_name}/{event}-{mvtId}{ext}"
+                Key=f"{self.__table.table_name}/{self.__event_name(event=event)}-{mvtId}{ext}"
                 )
         except ClientError as e:
             print(e)
             return False
         return True
+    
+    def __event_name(self, event: str) -> str:
+        """'event' field (DynamoDB) -> event identifier in S3"""
+        return event.split(" ")[-1]
 
     def insert_media_and_url(self, event: str, mvtId: str, media_path: str) -> dict:
         """
