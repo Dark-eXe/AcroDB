@@ -1,5 +1,6 @@
 import sys
 import os
+from urllib.parse import urlparse
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from AcroDB.ChatDB import ChatDB
@@ -15,8 +16,10 @@ def rewrite_multimedia_urls(items: list[dict]) -> list[dict]:
     """Attach CloudFront base URL to image paths unless already full URLs (e.g., Instagram)."""
     for item in items:
         url = item.get("image_s3_url")
-        if url and not url.startswith("https://www.instagram.com"):
-            item["image_s3_url"] = f"{CLOUDFRONT_BASE_URL}/{url}"
+        if url:
+            parsed_url = urlparse(url)
+            if parsed_url.hostname != "www.instagram.com":
+                item["image_s3_url"] = f"{CLOUDFRONT_BASE_URL}/{url}"
     return items
 
 def handle_query(query, acrodb_resources, openai_key, prompt_path, page, limit):
