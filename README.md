@@ -10,12 +10,24 @@ AcroDB
 │   ├── chat_query.ipynb
 │   └── chat_query.py
 ├── src
-│   ├── AcroDB.py
-│   ├── ChatDB.py
-│   ├── main.py
-│   ├── ChatCache.py
-│   ├── prompts
-│   │   └── main.txt
+│   ├── AcroDB
+│   │   ├── AcroDB.py
+│   │   ├── ChatCache.py
+│   │   ├── ChatDB.py
+│   │   └── prompts
+│   │       └── main.txt
+│   ├── backend
+│   │   ├── api
+│   │   │   └── routes.py
+│   │   ├── core
+│   │   │   ├── cache.py
+│   │   │   ├── config.py
+│   │   │   └── session.py
+│   │   ├── main.py
+│   │   ├── models
+│   │   │   └── request.py
+│   │   └── services
+│   │       └── query_handler.py
 │   └── react-app
 │       ├── package.json
 │       └── src
