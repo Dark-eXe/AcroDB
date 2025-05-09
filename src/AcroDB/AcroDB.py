@@ -131,27 +131,11 @@ class AcroDB():
 
     # S3 Bucket Media URL Interactions
     ################################
-    def __generate_s3_url(self, Bucket: str, Key: str, ExpiresIn: int=604800) -> str:
-        """Calls s3_client.generate_presigned_url()"""
-        # Define parameters for generate_presigned_url
-        ClientMethod = 'get_object'
-        Params = {'Bucket': self.__bucket, 'Key': Key}
-
-        # Invoke generate_presigned_url
-        return self.__s3_client.generate_presigned_url(
-            ClientMethod=ClientMethod,
-            Params=Params,
-            ExpiresIn=ExpiresIn
-        )
-
     def __insert_s3_url(self, event: str, mvtId: str, ext: str) -> dict:
-        """Generates and puts S3 url into corresponding Item in DynamoDB table."""
+        """Puts S3 path into corresponding Item in DynamoDB table."""
         # Define parameters
-        Key = f"{self.__table_name}/{event}-{mvtId}{ext}"
+        URL = f"{self.__table_name}/{self.__event_name(event)}-{mvtId}{ext}"
         Item = self.get_item(event=event, mvtId=mvtId)
-
-        # Generate URL
-        URL = self.__generate_s3_url(Bucket=self.__bucket, Key=Key)
 
         # Set URL
         Item["image_s3_url"] = URL
