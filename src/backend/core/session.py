@@ -1,33 +1,33 @@
 from boto3 import Session
-
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))) # add abspath of src/ to runtime import search path
+from fastapi import Body
+from ..models.request import QueryRequest
 from AcroDB.AcroDB import AcroDB
 
-_session = None
-_resources = None
+from backend.core.cache import SessionCache
+session_cache = SessionCache(ttl_seconds=3600)
 
-def get_dynamodb_resources(request=None):
-    global _session, _resources
+def get_dynamodb_resources(request: QueryRequest = Body(...)) -> dict:
+    """Return cached or fresh DynamoDB resources per user request."""
+    user_key = f"{request.aws_access_key_id}:{request.aws_session_token}"
 
-    if _resources is not None:
-        return _resources
+    cached_resources = session_cache.get(user_key)
+    if cached_resources:
+        return cached_resources
 
-    if request is None:
-        raise ValueError("Request is required to initialize session for the first time.")
-
-    _session = Session(
+    # If token is expired, this will fail during session creation (safe fallback)
+    session = Session(
         aws_access_key_id=request.aws_access_key_id,
         aws_secret_access_key=request.aws_secret_access_key,
         aws_session_token=request.aws_session_token,
         region_name="us-east-1"
     )
-    dynamodb = _session.resource('dynamodb')
-    
-    _resources = {
-        "MAG": AcroDB(table=dynamodb.Table("MAG_Code-of-Points")),
-        "WAG": AcroDB(table=dynamodb.Table("WAG_Code-of-Points")),
-        "Parkourpedia": AcroDB(table=dynamodb.Table("Parkourpedia"))
+    dynamodb = session.resource("dynamodb")
+
+    resources = {
+        "MAG_Code-of-Points": AcroDB(table=dynamodb.Table("MAG_Code-of-Points")),
+        "WAG_Code-of-Points": AcroDB(table=dynamodb.Table("WAG_Code-of-Points")),
+        "Parkourpedia": AcroDB(table=dynamodb.Table("Parkourpedia")),
     }
 
-    return _resources
+    session_cache.set(user_key, resources)
+    return resources

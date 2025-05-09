@@ -1,30 +1,22 @@
-from fastapi import APIRouter, Query
-from pydantic import BaseModel
+from fastapi import APIRouter, Query, Body, Depends
 from backend.core.session import get_dynamodb_resources
 from backend.core.config import PROMPT_PATH
+from backend.models.request import QueryRequest
 from backend.services.query_handler import handle_query
+import logging
 
 router = APIRouter()
 
-
-class QueryRequest(BaseModel):
-    query: str
-    aws_access_key_id: str
-    aws_secret_access_key: str
-    aws_session_token: str
-    openai_api_key: str
-
 @router.post("/query")
 async def query_chatdb(
-    request: QueryRequest,
+    request: QueryRequest = Body(...),
     page: int = Query(1, ge=1),
-    limit: int = Query(5, ge=1, le=50)
+    limit: int = Query(5, ge=1, le=50),
+    resources: dict = Depends(get_dynamodb_resources)
 ):
-    try:
-        # Will only create once and cache globally
-        resources = get_dynamodb_resources(request)
-    except Exception as e:
-        return {"error": f"Failed to initialize session: {str(e)}"}
+    print("Query:", request.query)
+    logger = logging.getLogger(__name__)
+    logger.info(f"User {request.aws_access_key_id} submitted: {request.query}")
 
     result, has_more = handle_query(
         query=request.query,

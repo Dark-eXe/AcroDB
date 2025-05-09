@@ -76,7 +76,14 @@ function App() {
       setResponse((prevResults) => [...prevResults, ...data.result]);
     }
 
-    setHasMore(data.result.length === 5);
+    if (data.result) {
+      setHasMore(data.result.length === 5);
+      if (newPage === 1) setResponse(data.result);
+      else setResponse(prev => [...prev, ...data.result]);
+    } else {
+      setHasMore(false);
+      setResponse([`❌ ${data.error || "Invalid server response."}`]);
+    }    
     setPage(newPage);
   };
 
