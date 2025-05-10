@@ -1,53 +1,17 @@
 import './App.css';
 import { useState } from "react";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
-import { CognitoIdentityCredentials, config } from "aws-sdk";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function MainPage() {
-  const [openaiKey] = useState(sessionStorage.getItem("openai_api_key") || "");
+function MainPage({ openaiKey, creds }) {
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes("id_token")) {
-      const idToken = new URLSearchParams(hash.replace("#", "?")).get("id_token");
-  
-      sessionStorage.setItem("cognito_id_token", idToken);
-  
-      config.region = "us-east-1";
-      config.credentials = new CognitoIdentityCredentials({
-        IdentityPoolId: "us-east-1:d61e5ada-6ae3-4670-b58d-16666fee8379",
-        Logins: {
-          "cognito-idp.us-east-1.amazonaws.com/us-east-1_wFEVP6OdC": idToken
-        }        
-      });
-  
-      config.credentials.get((err) => {
-        if (!err) {
-          const creds = {
-            accessKeyId: config.credentials.accessKeyId,
-            secretAccessKey: config.credentials.secretAccessKey,
-            sessionToken: config.credentials.sessionToken,
-          };
-          sessionStorage.setItem("aws_creds", JSON.stringify(creds));
-          window.history.replaceState(null, "", window.location.pathname);
-        } else {
-          console.error("AWS credential error", err);
-        }
-      });
-    }
-  }, []);
 
   const fetchResults = async (newPage) => {
-    const creds = JSON.parse(sessionStorage.getItem("aws_creds") || "{}");
-    const openaiKey = sessionStorage.getItem("openai_api_key") || "";
-
     const response = await fetch(`http://127.0.0.1:8000/query?page=${newPage}&limit=5`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
@@ -113,8 +77,7 @@ function MainPage() {
     }
   };
 
-  const creds = JSON.parse(sessionStorage.getItem("aws_creds") || "{}");
-  const disabled = !query.trim() || !creds.accessKeyId || !openaiKey;
+  const disabled = !query.trim() || !creds?.accessKeyId || !openaiKey;
 
   return (
     <div className="main-content">
@@ -126,14 +89,12 @@ function MainPage() {
 
       {/* Container */}
       <div className="container text-center mt-5 pt-4 bg-black bg-opacity-75">
-        {(!creds.accessKeyId || !openaiKey) && (<small className="d-block mb-2" style={{ color: "#ccc" }}>
-          Authenticate to access database with AWS and OpenAI. 
+        {(!creds.accessKeyId || !openaiKey) ? (<small className="d-block mb-2">
+          Please authenticate: 
           <Link className="nav-link" to="/auth">
           	<FontAwesomeIcon icon={faKey} />
-          </Link><br/>
-        </small>)}
-
-        <p className="lead">What acrobatic skills are you looking for?</p>
+          </Link>
+        </small> ) : (<p className="lead">What skills would you like to see?</p>)}
         {/* Query Form */}
         <form onSubmit={handleSubmit} className="d-flex justify-content-center mb-3">
           <input
@@ -189,6 +150,7 @@ function MainPage() {
             Load More
           </button>
         )}
+        <br/>
       </div>
     </div>
   );
