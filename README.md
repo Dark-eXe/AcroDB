@@ -41,15 +41,14 @@ AcroDB
 ## Web Interface
 
 [![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
-![demo1](https://github.com/user-attachments/assets/579013a3-4f3d-4c89-8e1e-7482dbda29cd)
-![demo2](https://github.com/user-attachments/assets/f3b377f8-28cc-41ce-8d5b-b9833304dc66)
-
+[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/) <br>
+<img src="https://github.com/user-attachments/assets/579013a3-4f3d-4c89-8e1e-7482dbda29cd" width="49%" height="49%">
+<img src="https://github.com/user-attachments/assets/f3b377f8-28cc-41ce-8d5b-b9833304dc66" width="49%" height="49%">
 
 
 
 ## 🏛️ Ecosystem  🏛️
-![Flowchart](https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138)
+<img src="https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138" width="50%" height="50%">
 
 
 ## License
