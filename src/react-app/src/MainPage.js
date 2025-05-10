@@ -82,7 +82,13 @@ function MainPage({ openaiKey, creds }) {
   return (
     <div className="main-content">
       {/* Video background */}
-      <video autoPlay loop muted className="video-background">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="video-background"
+      >
         <source src="/mv.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>

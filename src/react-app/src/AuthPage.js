@@ -26,17 +26,23 @@ function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
 
   return (
     <div className="main-content">
-      <video autoPlay loop muted className="video-background">
-        <source src="/mv.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      <video
+				autoPlay
+				loop
+				muted
+				playsInline
+				className="video-background"
+			>
+				<source src="/mv.mp4" type="video/mp4" />
+				Your browser does not support the video tag.
+			</video>
 
       <div className="container text-center mt-5 text-white bg-black bg-opacity-75">
         <br />
         <small>Authenticate with AWS and OpenAI credentials.</small> <br />
 
         {!creds?.accessKeyId && (
-          <button className="btn btn-success mb-3" onClick={handleLogin}>
+          <button className="btn btn-outline-warning mb-3" onClick={handleLogin}>
             Login with AWS Cognito
           </button>
         )}

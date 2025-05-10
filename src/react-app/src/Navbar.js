@@ -1,49 +1,96 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-import { Navbar, Container } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Navbar, Container, Nav } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket} from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FaGithub } from "react-icons/fa";
 
 function NavBar() {
   const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+
+  // Track screen size for mobile toggle detection
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 992);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem("openai_api_key");
     sessionStorage.removeItem("aws_creds");
     sessionStorage.removeItem("cognito_id_token");
+    setExpanded(false);
     navigate("/auth");
   };
 
   return (
-    <Navbar fixed="top" className="px-3 bg-black bg-opacity-75">
-      <Container fluid className="d-flex justify-content-between align-items-center">
+    <Navbar
+      bg="black"
+      variant="dark"
+      expand="lg"
+      expanded={expanded}
+      fixed="top"
+      className="bg-opacity-75 px-3"
+    >
+      <Container fluid>
+        {/* Left: GitHub */}
+        <Nav.Link
+          href="https://github.com/Dark-eXe/AcroDB"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white"
+          style={{ padding: 0 }}
+        >
+          <FaGithub />
+        </Nav.Link>
 
-        <div className="">
-          <a
-            href="https://github.com/Dark-eXe/AcroDB"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav-link"
-          >
-            <FaGithub />
-          </a>
+        {/* Center: Brand */}
+        <div className="flex-grow-1 text-center">
+          <Navbar.Brand as={Link} to="/" onClick={() => setExpanded(false)}>
+            <h1 className="display-3 text-warning m-0">Acro<span className="text-white">DB</span></h1>
+            <small className="text-white d-block" style={{ fontSize: "1rem" }}>
+              Chat-queried NoSQL database for gymnasts and parkour practitioners.
+            </small>
+          </Navbar.Brand>
         </div>
 
+        {/* Right: Logout (desktop) + Toggler */}
         <div className="d-flex align-items-center">
-          <Link className="navbar-brand text-warning" to="/">
-            <h1 className="display-4 text-warning">Acro<span className="display-4 text-white">DB</span></h1>
-            <small className="text-white">Chat-queried NoSQL database for gymnasts and parkour practitioners.</small>
-          </Link>
+          {!isMobile && (
+            <Nav className="me-2">
+              <Nav.Link
+                as="button"
+                className="btn btn-link nav-link p-0 text-white"
+                onClick={handleLogout}
+                title="Logout"
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} />
+              </Nav.Link>
+            </Nav>
+          )}
+          <Navbar.Toggle
+            onClick={() => setExpanded(!expanded)}
+            aria-controls="navbar-content"
+            className="border-0"
+          />
         </div>
 
-        <div className="d-flex">
-          <button className="btn btn-link nav-link p-0" onClick={handleLogout} title="Logout">
-            <FontAwesomeIcon icon={faRightFromBracket} />
-          </button>
-        </div>
-
+        {/* Collapsed Logout (mobile only, when expanded) */}
+        {isMobile && expanded && (
+          <Navbar.Collapse id="navbar-content" className="d-lg-none mt-2">
+            <Nav className="flex-column align-items-end">
+              <Nav.Link
+                as="button"
+                className="btn btn-link nav-link p-0 text-white"
+                onClick={handleLogout}
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} /> Logout
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        )}
       </Container>
     </Navbar>
   );
