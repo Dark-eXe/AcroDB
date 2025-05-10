@@ -10,7 +10,7 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 
 <img src="https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138" width="100%" height="100%">
 
-## Flow
+## Web User Interface
 
 <img src="https://github.com/user-attachments/assets/60e1dac7-9eda-47d6-a905-bd6dcf898a52" width="48%" height="48%"> $\rightarrow$
 <img src="https://github.com/user-attachments/assets/f3b377f8-28cc-41ce-8d5b-b9833304dc66" width="48%" height="48%">
