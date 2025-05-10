@@ -1,6 +1,6 @@
 <img src="https://github.com/user-attachments/assets/579013a3-4f3d-4c89-8e1e-7482dbda29cd">
 
-#
+# AcroDB
 
 Chat-queried NoSQL database for gymnasts and parkour practitioners.
 
@@ -9,11 +9,13 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
 
 <img src="https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138" width="100%" height="100%">
-<br><br>
 
-<img src="https://github.com/user-attachments/assets/f3b377f8-28cc-41ce-8d5b-b9833304dc66" width="49%" height="49%">
-<img src="https://github.com/user-attachments/assets/60e1dac7-9eda-47d6-a905-bd6dcf898a52" width="49%" height="49%">
-<br><br>
+## Flow
+
+<img src="https://github.com/user-attachments/assets/60e1dac7-9eda-47d6-a905-bd6dcf898a52" width="48%" height="48%"> $\rightarrow$
+<img src="https://github.com/user-attachments/assets/f3b377f8-28cc-41ce-8d5b-b9833304dc66" width="48%" height="48%">
+
+## File Directory Structure
 
 ```
 AcroDB
