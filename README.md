@@ -42,7 +42,10 @@ AcroDB
 
 [![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
-![demo](https://github.com/user-attachments/assets/c5e21e2e-f84f-47a7-847f-415f3f2fa88a)
+![demo1](https://github.com/user-attachments/assets/579013a3-4f3d-4c89-8e1e-7482dbda29cd)
+![demo2](https://github.com/user-attachments/assets/f3b377f8-28cc-41ce-8d5b-b9833304dc66)
+
+
 
 
 ## 🏛️ Ecosystem  🏛️
