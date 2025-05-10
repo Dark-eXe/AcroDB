@@ -1,6 +1,6 @@
 <img src="https://github.com/user-attachments/assets/579013a3-4f3d-4c89-8e1e-7482dbda29cd">
 
-# 🤸‍♂️ AcroDB 🤸
+#
 
 Chat-queried NoSQL database for gymnasts and parkour practitioners.
 
