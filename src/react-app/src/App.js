@@ -5,7 +5,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
   useLocation
 } from "react-router-dom";
 import { CognitoIdentityCredentials, config } from "aws-sdk";
@@ -25,17 +24,14 @@ function App() {
 function AppRoutes() {
   const [openaiKey, setOpenaiKey] = useState(sessionStorage.getItem("openai_api_key") || "");
   const [creds, setCreds] = useState({});
-  const navigate = useNavigate();
   const location = useLocation();  // <-- FIX: use react-router's location
 
   useEffect(() => {
     const hash = window.location.hash;
-    console.log("▶️ useEffect hash:", hash);
 
     if (location.pathname === "/auth" && hash.includes("id_token")) {
       const idToken = new URLSearchParams(hash.replace("#", "?")).get("id_token");
       sessionStorage.setItem("cognito_id_token", idToken);
-      console.log("✅ ID token extracted and stored:", idToken);
 
       config.region = "us-east-1";
       config.credentials = new CognitoIdentityCredentials({
@@ -52,7 +48,6 @@ function AppRoutes() {
             secretAccessKey: config.credentials.secretAccessKey,
             sessionToken: config.credentials.sessionToken,
           };
-          console.log("✅ AWS credentials retrieved:", newCreds);
           sessionStorage.setItem("aws_creds", JSON.stringify(newCreds));
           setCreds(newCreds);
           window.history.replaceState(null, "", location.pathname);
@@ -62,19 +57,12 @@ function AppRoutes() {
       });
     } else {
       const storedCreds = sessionStorage.getItem("aws_creds");
-      console.log("ℹ️ No hash. Stored creds:", storedCreds);
       if (storedCreds) {
         const parsedCreds = JSON.parse(storedCreds);
-        console.log("✅ Loaded creds from sessionStorage:", parsedCreds);
         setCreds(parsedCreds);
       }
     }
   }, [location]);
-
-  useEffect(() => {
-    console.log("📦 React State Change — creds:", creds);
-    console.log("📦 React State Change — openaiKey:", openaiKey);
-  }, [creds, openaiKey]);
 
   const handleLogin = () => {
     const loginUrl = `https://us-east-1wfevp6odc.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=2iv8mu5ivuvc7h0nb59vfdnfjp&redirect_uri=http://localhost:3000/auth`;
