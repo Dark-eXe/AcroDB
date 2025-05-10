@@ -9,7 +9,7 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/) <br>
 <img src="https://github.com/user-attachments/assets/f3b377f8-28cc-41ce-8d5b-b9833304dc66">
 
-## 🏛️ Architecture 🏛️
+## 🏛️ Design 🏛️
 <img src="https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138" width="100%" height="100%">
 
 ```
