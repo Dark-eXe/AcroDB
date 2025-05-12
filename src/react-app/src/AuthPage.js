@@ -48,7 +48,7 @@ function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
         )}
 
         {creds?.accessKeyId && (
-          <div className="text-success mb-3">Logged in via AWS Cognito</div>
+          <div className="btn btn-outline-success mb-3">AWS set</div>
         )}
 
         <button
