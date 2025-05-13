@@ -14,7 +14,7 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 
 <img src="https://github.com/user-attachments/assets/691c4348-1556-46c4-8984-078b21f2f9aa" width="47%" height="47%"> $\rightarrow$
 <img src="https://github.com/user-attachments/assets/7bc3b2e0-c9a7-419d-bbfa-5010a7cf2f14" width="47%" height="47%"> $\rightarrow$
-<img src="https://github.com/user-attachments/assets/7da9223b-b963-402f-9d5a-8d36c11eae8b" width="50%" height="50%">
+<img src="https://github.com/user-attachments/assets/7da9223b-b963-402f-9d5a-8d36c11eae8b" width="75%" height="75%">
 
 ## File Directory Structure
 
