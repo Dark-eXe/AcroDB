@@ -41,7 +41,7 @@ function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
 
       <div className="container text-center mt-5 text-white bg-black bg-opacity-75">
         <br />
-        <small>Authenticate with AWS and OpenAI credentials.</small> <br />
+        <h6>Authenticate with AWS and OpenAI Credentials</h6> <br />
 
         {!creds?.accessKeyId && (
           <button className="btn btn-outline-warning btn-lg mb-3" onClick={handleLogin}>

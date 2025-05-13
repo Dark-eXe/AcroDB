@@ -1,22 +1,18 @@
-
 body {
-  background-color: #1e1e1e !important;  /* Dark gray */
+  background-color: #1e1e1e !important;
   color: white !important;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
   font-size: large !important;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center !important;
   margin: 0;
+  text-align: center !important;
+  min-height: 100vh;
 }
 
 hr {
-  border: none; /* Remove any existing border styles */
-  border-top: 1px solid #ccc !important; /* Light color with force */
-  margin: 1.5rem 0; /* Padding above and below */
-  opacity: 1; /* Override Bootstrap's opacity */
+  border: none;
+  border-top: 1px solid #ccc !important;
+  margin: 1.5rem 0;
+  opacity: 1;
   position: relative;
   z-index: 1;
 }
@@ -30,32 +26,41 @@ hr {
 }
 
 .main-content {
-  padding-top: 110px !important;
+  padding-top: 130px !important;
+  min-height: 100vh;
 }
 
 .container {
-  max-width: 600px; /* Limits container width */
-  width: 100%; /* Keeps responsiveness */
-  max-height: 98vh; /* Limits height to allow scrolling */
-  overflow-y: auto !important; /* Enables scrolling */
+  width: fit-content !important;
+  max-width: 75% !important;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centers content horizontally */
-  justify-content: flex-start; /* Keeps items at the top */
-  padding: 20px auto;
-  margin: 20px auto; /* Centers container */
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  margin: 0 auto;
+  margin-bottom: 10px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .results-container {
-  max-height: 60vh;
+  max-height: 54vh;
   overflow-y: auto !important;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.0);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background-color: rgba(255, 255, 255, 0.0);
+}
+
+select.form-select,
+select.form-select:focus {
+  background-color: #383838 !important;
+  color: white !important;
+  border-color: white !important;
+  box-shadow: none !important;
 }
 
 h6 {
@@ -64,16 +69,21 @@ h6 {
 
 ul {
   text-align: left;
-  list-style-type: None;
+  list-style-type: none;
 }
 
 .accordion-item {
   min-width: 300px !important;
 }
 
-.accordion-button, .accordion-body{
+.accordion-button, .accordion-body {
   color: white !important;
   background-color: #383838 !important;
+}
+
+.accordion-button:hover {
+  background-color: #2e2e2e !important;
+  cursor: pointer;
 }
 
 .video-background {
@@ -82,35 +92,39 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures video covers the entire screen */
-  z-index: -1; /* Keeps it behind all content */
-  opacity: 0.1; /* Adjust opacity for a faded effect */
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.1;
   pointer-events: none;
 }
 
 .form-control:valid {
-  background-color:  #383838 !important;
-  border-color:  #383838 !important;
+  background-color: #383838 !important;
+  border-color: #383838 !important;
   color: white !important;
 }
 
 ::placeholder {
   color: rgb(182, 182, 182) !important;
-  opacity: 1; /* Ensures full visibility */
+  opacity: 1;
 }
 
 .form-control:focus {
-  box-shadow: none !important; /* Removes Bootstrap's default shadow */
-  border-color: white !important; /* Sets white border */
+  box-shadow: none !important;
+  border-color: white !important;
 }
 
 .media-img {
   max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .media-video {
   width: 100%;
   max-height: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .media-pdf {
@@ -121,4 +135,15 @@ ul {
 
 .media-container {
   text-align: center;
+}
+
+.loading-overlay {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.load-more-btn {
+  position: sticky !important;
 }
