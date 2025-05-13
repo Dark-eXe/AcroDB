@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/579013a3-4f3d-4c89-8e1e-7482dbda29cd">
+<img src="https://github.com/user-attachments/assets/0d4bf9f3-7125-490a-9790-9a68be751489">
 
 # AcroDB
 
@@ -12,8 +12,9 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 
 ## Web User Interface
 
-<img src="https://github.com/user-attachments/assets/60e1dac7-9eda-47d6-a905-bd6dcf898a52" width="48%" height="48%"> $\rightarrow$
-<img src="https://github.com/user-attachments/assets/f3b377f8-28cc-41ce-8d5b-b9833304dc66" width="48%" height="48%">
+<img src="https://github.com/user-attachments/assets/691c4348-1556-46c4-8984-078b21f2f9aa" width="47%" height="47%"> $\rightarrow$
+<img src="https://github.com/user-attachments/assets/7bc3b2e0-c9a7-419d-bbfa-5010a7cf2f14" width="47%" height="47%"> $\rightarrow$
+<img src="https://github.com/user-attachments/assets/7da9223b-b963-402f-9d5a-8d36c11eae8b" width="50%" height="50%">
 
 ## File Directory Structure
 
@@ -36,6 +37,7 @@ AcroDB
 │   │   ├── core
 │   │   │   ├── cache.py
 │   │   │   ├── config.py
+│   │   │   ├── rate_limit.py
 │   │   │   └── session.py
 │   │   ├── main.py
 │   │   ├── models
