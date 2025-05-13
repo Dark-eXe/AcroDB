@@ -65,7 +65,7 @@ function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
         {showApiModal && (
           <div className="modal show fade d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
             <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content bg-dark text-white">
+              <div className="modal-content bg-black border border-white border-opacity-50 text-white">
                 <div className="modal-header">
                   <AiFillOpenAI />
                   <button type="button" className="btn-close btn-close-white" onClick={() => setShowApiModal(false)}></button>

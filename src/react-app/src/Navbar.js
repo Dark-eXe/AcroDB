@@ -48,9 +48,9 @@ function NavBar() {
           </Nav.Link>
 
           {/* Center: Brand */}
-          <div className="flex-grow-1 text-center">
+          <div className="text-center">
             <Navbar.Brand as={Link} to="/" onClick={() => setExpanded(false)}>
-              <h1 className="display-3 text-warning m-0">Acro<span className="text-white">DB</span></h1>
+              <h1 className="display-4 text-warning m-0">Acro<span className="text-white m-0">DB</span></h1>
               <small className="text-white d-block" style={{ fontSize: "1rem" }}>
                 Chat-queried NoSQL database for gymnasts and parkour practitioners.
               </small>
@@ -108,17 +108,18 @@ function NavBar() {
         show={showHelp}
         onHide={() => setShowHelp(false)}
         centered
-        contentClassName="bg-dark text-white border border-light rounded"
+        contentClassName="bg-black text-white border border-white border-opacity-50 rounded"
       >
         <Modal.Header closeButton closeVariant="white">
           <Modal.Title>Need Help?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <ul className="text-start">
-            <li>🔐 Login securely with AWS Cognito</li>
-            <li>🔑 Input your OpenAI API key to query (your API key is stored in-session and is never sent to our servers)</li>
+            <li>🔐 Login securely with AWS Cognito (it's free)</li>
+            <li>🔑 Input your OpenAI API key to query (your API key is stored in-session and is never sent to our servers) <br/> ... visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI's API key page</a></li>
             <li>📝 Ask about skills, moves, or keywords like “MAG Floor” or “show backflips” <br/> ... or if you know the specific ID, even better! Also specify the discipline and event like "MAG Floor ID 1"</li>
             <li>📦 Data is fetched securely from DynamoDB and S3</li>
+            <li>📱 Horizontal orientation is recommended for mobile devices</li>
             <li>🧑‍💻 See GitHub (top left icon) or email turangan@usc.edu for direct inquiries</li>
           </ul>
         </Modal.Body>
