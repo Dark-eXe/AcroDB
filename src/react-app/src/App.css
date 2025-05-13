@@ -7,7 +7,6 @@ body {
   padding: 0;
   text-align: center !important;
   min-height: 100vh;
-
 }
 
 hr {
@@ -26,7 +25,7 @@ hr {
   position: relative !important;
   min-width: fit-content;
   width: 100%;
-  height: fit-content !important;
+  min-height: fit-content !important;
   z-index: 1000;
 }
 
@@ -42,7 +41,7 @@ hr {
   align-items: center;
   justify-content: flex-start;
   padding: 20px;
-  margin: 0 auto;
+  margin: 0 auto !important;
   margin-bottom: 10px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
@@ -52,7 +51,7 @@ hr {
 }
 
 .results-container {
-  max-height: 55vh;
+  max-height: 90vh;
   min-width: 30vw;
   overflow-y: auto !important;
   padding: 10px;
