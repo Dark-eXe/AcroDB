@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Container, Nav, Modal, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -91,6 +91,7 @@ function NavBar() {
         <Modal.Body>
           <ul className="text-start">
             <li>🔐 Login securely with AWS Cognito (it's free)</li>
+            {/*eslint-disable-next-line*/}
             <li>🔑 Input your OpenAI API key to query (your API key is stored in-session and is never sent to our servers) <br/> ... visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI's API key page</a></li>
             <li>📝 Ask about skills, moves, or keywords like “MAG Floor” or “show backflips” <br/> ... or if you know the specific ID, even better! Also specify the discipline and event like "MAG Floor ID 1"</li>
             <li>📦 Data is fetched securely from DynamoDB and S3</li>
