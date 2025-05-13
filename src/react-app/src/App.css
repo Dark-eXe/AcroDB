@@ -80,11 +80,13 @@ ul {
 
 .accordion-item {
   min-width: 300px !important;
+  border-color: #686868 !important;
 }
 
 .accordion-button, .accordion-body {
   color: white !important;
   background-color: #383838 !important;
+  border-color: #686868 !important;
 }
 
 .accordion-button:hover {

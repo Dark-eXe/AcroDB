@@ -10,7 +10,6 @@ function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
   useEffect(() => {
     const storedCreds = JSON.parse(sessionStorage.getItem("aws_creds") || "{}");
     const storedKey = sessionStorage.getItem("openai_api_key");
-
     const credsReady = storedCreds?.accessKeyId;
     const openaiReady = storedKey || openaiKey;
 
