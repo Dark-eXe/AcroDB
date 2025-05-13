@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AiFillOpenAI } from "react-icons/ai";
+import { FaAws } from "react-icons/fa";
 
 function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
   const [showApiModal, setShowApiModal] = useState(false);
@@ -42,20 +44,22 @@ function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
         <small>Authenticate with AWS and OpenAI credentials.</small> <br />
 
         {!creds?.accessKeyId && (
-          <button className="btn btn-outline-warning mb-3" onClick={handleLogin}>
-            Login with AWS Cognito
+          <button className="btn btn-outline-warning btn-lg mb-3" onClick={handleLogin}>
+            <FaAws />
           </button>
         )}
 
         {creds?.accessKeyId && (
-          <div className="btn btn-outline-success mb-3">AWS set</div>
+          <div className="btn btn-outline-success btn-lg mb-3">
+            <FaAws />
+          </div>
         )}
 
         <button
-          className={`btn mb-2 ${openaiKey ? "btn-outline-success" : "btn-outline-warning"}`}
+          className={`btn btn-lg mb-2 ${openaiKey ? "btn-outline-success" : "btn-outline-warning"}`}
           onClick={() => setShowApiModal(true)}
         >
-          {openaiKey ? "OpenAI set" : "Set OpenAI API Key"}
+          <AiFillOpenAI />
         </button>
 
         {showApiModal && (
@@ -63,14 +67,14 @@ function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content bg-dark text-white">
                 <div className="modal-header">
-                  <h5 className="modal-title">Enter OpenAI API Key</h5>
+                  <AiFillOpenAI />
                   <button type="button" className="btn-close btn-close-white" onClick={() => setShowApiModal(false)}></button>
                 </div>
                 <div className="modal-body">
                   <input
                     type="password"
                     className="form-control"
-                    placeholder="OpenAI API Key"
+                    placeholder="API Key"
                     value={openaiKey}
                     onChange={(e) => setOpenaiKey(e.target.value)}
                   />

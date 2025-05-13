@@ -12,14 +12,33 @@ cache = ChatCache()
 # CloudFront base URL for multimedia assets
 CLOUDFRONT_BASE_URL = "https://d1qh8wrq6r4xyn.cloudfront.net"
 
-def rewrite_multimedia_urls(items: list[dict]) -> list[dict]:
-    """Attach CloudFront base URL to image paths unless already full URLs (e.g., Instagram)."""
+key_mapping = {
+    "mvtId": "ID", 
+    "event": "Event",
+    "description": "Description",
+    "difficulty": "Difficulty",
+    "value": "Value",
+    "group": "Group"}
+def rename_keys(my_dict: dict, key_mapping: dict=key_mapping) -> None:
+    """Renames keys in a dictionary based on a provided mapping."""
+    for old_key, new_key in key_mapping.items():
+        if old_key in my_dict:
+            my_dict[new_key] = my_dict.pop(old_key)
+
+def is_full_url(url):
+    try:
+        parsed = urlparse(url)
+        return bool(parsed.scheme and parsed.netloc)
+    except:
+        return False
+
+def prep_items(items: list[dict]) -> list[dict]:
     for item in items:
-        url = item.get("image_s3_url")
-        if url:
-            parsed_url = urlparse(url)
-            if parsed_url.hostname != "www.instagram.com":
+        if isinstance(item, dict):
+            url = item.get("image_s3_url")
+            if url and not is_full_url(url):
                 item["image_s3_url"] = f"{CLOUDFRONT_BASE_URL}/{url}"
+            rename_keys(item)
     return items
 
 def handle_query(query, acrodb_resources, openai_key, prompt_path, page, limit):
@@ -31,14 +50,14 @@ def handle_query(query, acrodb_resources, openai_key, prompt_path, page, limit):
     response = chat.translate_chat(query)
     print(f"--> {response}")
 
-    if response in cache.cache_sequence:
-        result = cache.cache_response[response]
-    else:
-        result = chat.exec_items(chat.exec_response(response))
-        cache.addPair(response=response, result=result)
+    if response not in cache.cache_response:
+        full_result = chat.exec_items(chat.exec_response(response))
+        cache.addPair(response=response, result=full_result)
+
+    result = cache.cache_response[response]
 
     start_idx = (page - 1) * limit
     end_idx = start_idx + limit
     paginated = result[start_idx:end_idx]
-
-    return rewrite_multimedia_urls(paginated), end_idx < len(result)
+    
+    return prep_items(paginated), end_idx < len(result)

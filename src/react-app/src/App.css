@@ -33,7 +33,6 @@ hr {
   padding-top: 110px !important;
 }
 
-
 .container {
   max-width: 600px; /* Limits container width */
   width: 100%; /* Keeps responsiveness */
@@ -50,24 +49,31 @@ hr {
 }
 
 .results-container {
-  max-height: 60vh;  /* Limits container height to 60% of viewport */
-  overflow-y: auto !important; /* Ensures vertical scrolling */
+  max-height: 60vh;
+  overflow-y: auto !important;
   padding: 10px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.0);
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Adds spacing between cards */
+  gap: 10px;
 }
 
-/* Ensure individual cards are constrained */
-.card {
-  width: 100% !important; /* Full width of container */
-  max-width: 600px !important; /* Prevents excessive width */
-  padding: 15px !important;
-  border-radius: 10px !important;
-  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1) !important;
-  margin-bottom: 10px; /* Adds space between cards */
+h6 {
+  text-align: center !important;
+}
+
+ul {
+  text-align: left;
+  list-style-type: None;
+}
+
+.accordion-item {
+  min-width: 300px !important;
+}
+
+.accordion-button, .accordion-body{
+  color: white !important;
+  background-color: #383838 !important;
 }
 
 .video-background {
@@ -100,14 +106,11 @@ hr {
 
 .media-img {
   max-width: 100%;
-  height: auto;
-  border-radius: 8px;
 }
 
 .media-video {
   width: 100%;
   max-height: 300px;
-  border-radius: 8px;
 }
 
 .media-pdf {
@@ -117,6 +120,5 @@ hr {
 }
 
 .media-container {
-  margin-top: 15px;
   text-align: center;
 }
