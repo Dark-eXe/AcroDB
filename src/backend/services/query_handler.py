@@ -2,6 +2,7 @@ import sys
 import os
 from urllib.parse import urlparse
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+from typing import List
 
 from AcroDB.ChatDB import ChatDB
 from AcroDB.ChatCache import ChatCache
@@ -32,7 +33,7 @@ def is_full_url(url):
     except:
         return False
 
-def prep_items(items: list[dict]) -> list[dict]:
+def prep_items(items: List[dict]) -> List[dict]:
     for item in items:
         if isinstance(item, dict):
             url = item.get("image_s3_url")
