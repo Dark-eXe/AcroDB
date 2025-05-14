@@ -4,3 +4,4 @@ boto3
 urllib3
 uvicorn
 gunicorn
+slowapi
