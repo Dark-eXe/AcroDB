@@ -65,7 +65,7 @@ function AppRoutes() {
   }, [location]);
 
   const handleLogin = () => {
-    const loginUrl = `https://us-east-1wfevp6odc.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=2iv8mu5ivuvc7h0nb59vfdnfjp&redirect_uri=http://localhost:3000/auth`;
+    const loginUrl = `https://us-east-1wfevp6odc.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=2iv8mu5ivuvc7h0nb59vfdnfjp&redirect_uri=https://acrodb.io/auth`;
     window.location.href = loginUrl;
   };
 
