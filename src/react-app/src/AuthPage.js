@@ -23,8 +23,6 @@ function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
     setShowApiModal(false);
   };
 
-  const creds = JSON.parse(sessionStorage.getItem("aws_creds") || "{}");
-
   return (
     <div className="main-content">
       <video
