@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Container, Nav, Modal, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
-import { FaGithub } from "react-icons/fa";
+import { AiFillOpenAI } from "react-icons/ai";
+import { FaAws } from "react-icons/fa";
 
 function NavBar() {
   const navigate = useNavigate();
@@ -28,17 +29,15 @@ function NavBar() {
         <Container fluid>
           {/* Left: GitHub */}
           <Nav.Link
-            href="https://github.com/Dark-eXe/AcroDB"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ms-5 text-white"
-            style={{ padding: 0 }}
+            as="button"
+            className="me-2 btn btn-link nav-link p-0 text-white"
+            onClick={() => setShowHelp(true)}
+            title="Help"
           >
             <div className=" btn btn-outline-light">
-              <FaGithub />
+              <FontAwesomeIcon icon={faCircleQuestion} />
             </div>
           </Nav.Link>
-
           {/* Center: Brand */}
           <div className="text-center m-0">
             <Navbar.Brand as={Link} to="/">
@@ -52,16 +51,6 @@ function NavBar() {
           {/* Right: Logout + Help + Toggler */}
           <div className="d-flex align-items-center">
             <Nav className="">
-              <Nav.Link
-                as="button"
-                className="me-2 btn btn-link nav-link p-0 text-white"
-                onClick={() => setShowHelp(true)}
-                title="Help"
-              >
-                <div className=" btn btn-outline-light">
-                  <FontAwesomeIcon icon={faCircleQuestion} />
-                </div>
-              </Nav.Link>
               
               <Nav.Link
                 as="button"
@@ -90,13 +79,20 @@ function NavBar() {
         </Modal.Header>
         <Modal.Body>
           <ul className="text-start">
-            <li>🔐 Login securely with AWS Cognito (it's free)</li>
+            <li><button className="btn btn-outline-warning btn-sm mb-2"><FaAws/></button> Login securely with AWS (it's free)</li>
+            <li><button className="btn btn-outline-warning btn-sm"><AiFillOpenAI/></button> Input your OpenAI API key to query <br/> 
+              {/*eslint-disable-next-line*/}
+              <em><small>- your API key is session-scoped and never sent to our servers, visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI's API key page</a> </small></em> <br/>
+              <em><small>*non-OpenAI and cost-free LLM planned for future</small></em>
+            </li>
+            <hr/>
+            <li>📝 Ask about skills, moves, or keywords like “MAG Floor” or “show backflips” <br/> ... or if you know the specific ID, even better! Also specify the discipline and event</li>
+            <li><small>ex. "WAG Vault ID 1"</small></li>
+            <hr/>
+            <li>📦 Data fetched securely from DynamoDB and S3</li>
+            <li>📱 Horizontal orientation recommended for mobile devices</li>
             {/*eslint-disable-next-line*/}
-            <li>🔑 Input your OpenAI API key to query <br/> ... your API key is session-scoped and never sent to our servers, visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI's API key page</a> <br/><em>*non-OpenAI and cost-free LLM planned for future</em></li>
-            <li>📝 Ask about skills, moves, or keywords like “MAG Floor” or “show backflips” <br/> ... or if you know the specific ID, even better! Also specify the discipline and event like "MAG Floor ID 1"</li>
-            <li>📦 Data is fetched securely from DynamoDB and S3</li>
-            <li>📱 Horizontal orientation is recommended for mobile devices</li>
-            <li>🧑‍💻 See GitHub (top left icon) or email turangan@usc.edu for direct inquiries</li>
+            <li>🧑‍💻 See <a href="https://github.com/Dark-eXe/AcroDB" target="_blank"><small>GitHub</small></a> or email <small>turangan@usc.edu</small> for direct inquiries</li>
           </ul>
         </Modal.Body>
         <Modal.Footer>

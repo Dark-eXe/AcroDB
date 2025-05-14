@@ -51,7 +51,7 @@ hr {
 }
 
 .results-container {
-  max-height: 90vh;
+  max-height: 95vh;
   min-width: 30vw;
   overflow-y: auto !important;
   padding: 10px;
@@ -123,7 +123,7 @@ ul {
 }
 
 .media-img {
-  max-width: 100%;
+  max-width: 60vh;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
