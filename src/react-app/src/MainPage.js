@@ -40,7 +40,7 @@ function MainPage({ openaiKey, creds }) {
   const fetchResults = async (newPage) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:8000/query?page=${newPage}&limit=10`, {
+      const response = await fetch(`https://ff2hzmpmc5.us-east-1.awsapprunner.com/query?page=${newPage}&limit=10`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
