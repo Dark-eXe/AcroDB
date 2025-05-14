@@ -13,12 +13,13 @@ from openai import OpenAI, RateLimitError, AuthenticationError
 
 from decimal import Decimal
 import itertools
+from typing import List
 
 class ChatDB():
     # Constructor
     ################################
     """Chat query. Interfaces with AcroDB instance(s)."""
-    def __init__(self, acrodb_list: list[AcroDB]=[], API_KEY: str="", prompt_path: str="", verbose: bool=False):
+    def __init__(self, acrodb_list: List[AcroDB]=[], API_KEY: str="", prompt_path: str="", verbose: bool=False):
         """
         Initialize ChatDB instance.
 
@@ -77,7 +78,7 @@ class ChatDB():
         """Get count of linked AcroDB instances."""
         return self.__acrodb_count
 
-    def get_db_list(self) -> list[AcroDB]:
+    def get_db_list(self) -> List[AcroDB]:
         """Getter for list of linked AcroDB instances."""
         return self.__acrodb_list
     
