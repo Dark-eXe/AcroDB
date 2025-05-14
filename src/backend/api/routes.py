@@ -14,7 +14,6 @@ from backend.core.session import get_dynamodb_resources
 from backend.core.config import PROMPT_PATH
 from backend.core.rate_limit import limiter
 import logging
-import json
 
 router = APIRouter()
 

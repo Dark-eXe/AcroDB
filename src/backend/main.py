@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from backend.api.routes import router
 from backend.core.config import CORS_CONFIG
 from backend.core.rate_limit import limiter
+from mangum import Mangum
 
 app = FastAPI()
 
@@ -25,3 +26,5 @@ app.add_middleware(
 
 # Include routes
 app.include_router(router)
+
+handler = Mangum(app)
