@@ -5,3 +5,4 @@ urllib3
 uvicorn
 gunicorn
 slowapi
+numpy
