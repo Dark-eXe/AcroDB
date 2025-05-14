@@ -1,8 +1,6 @@
 fastapi
-uvicorn
 pydantic
 boto3
-mangum
 urllib3
 uvicorn
 gunicorn
