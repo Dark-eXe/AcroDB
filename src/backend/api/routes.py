@@ -1,12 +1,3 @@
-from fastapi import APIRouter, Query, Body, Depends, Request
-from backend.models.request import QueryRequest
-from backend.services.query_handler import handle_query
-from backend.core.session import get_dynamodb_resources
-from backend.core.config import PROMPT_PATH
-from backend.core.rate_limit import limiter
-import logging
-
-router = APIRouter()
 from fastapi import APIRouter, Request, Query, Depends
 from backend.models.request import QueryRequest
 from backend.services.query_handler import handle_query
