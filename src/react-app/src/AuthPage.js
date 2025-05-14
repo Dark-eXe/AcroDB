@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AiFillOpenAI } from "react-icons/ai";
 import { FaAws } from "react-icons/fa";
 
-function AuthPage({ openaiKey, setOpenaiKey, handleLogin }) {
+function AuthPage({ openaiKey, setOpenaiKey, handleLogin, creds }) {
   const [showApiModal, setShowApiModal] = useState(false);
   const navigate = useNavigate();
 
