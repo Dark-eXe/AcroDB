@@ -82,7 +82,7 @@ class ChatDB():
         """Getter for list of linked AcroDB instances."""
         return self.__acrodb_list
     
-    def get_chat_log(self) -> list[dict]:
+    def get_chat_log(self) -> List[dict]:
         """Getter for chat log."""
         return self.__chat_log
 
