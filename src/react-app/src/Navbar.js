@@ -37,12 +37,15 @@ function NavBar() {
             </div>
           </Nav.Link>
           {/* Center: Brand */}
-          <div className="text-center m-0">
+          <div className="text-center m-0 py-1">
             <Navbar.Brand>
-              <h1 className="display-4 text-warning m-0">Acro<span className="text-white m-0">DB</span></h1>
-              <small className="text-white d-block" style={{ fontSize: "1rem" }}>
-                Chat-queried NoSQL database for gymnasts and parkour practitioners.
-              </small>
+              <img
+                src="/logo.png"
+                alt="AcroDB Logo"
+                style={{ height: "95px" }}
+              />
+              <br/>
+              <small style={{ fontSize: "0.9rem"}}>Chat-queried NoSQL database for gymnasts and parkour practitioners.</small>
             </Navbar.Brand>
           </div>
 
