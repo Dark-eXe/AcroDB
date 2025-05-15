@@ -11,7 +11,7 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 <img src="https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138" width="100%" height="100%">
 
 ## acrodb.io
-<em>Website is now live!</em><br/><br/>
+<em>Website is live!</em><br/><br/>
 <img src="https://github.com/user-attachments/assets/82576bd9-50d2-45c7-8193-fff01a2565d5" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
 <img src="https://github.com/user-attachments/assets/f73997bb-a530-4bdc-b5b7-b9fb7ea854b6" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
 <img src="https://github.com/user-attachments/assets/94287189-081c-43e8-b614-c193a2241e53" width="75%" height="75%">
