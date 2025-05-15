@@ -29,7 +29,7 @@ function AppRoutes() {
   useEffect(() => {
     const hash = window.location.hash;
 
-    if (location.pathname === "/auth" && hash.includes("id_token")) {
+    if (hash.includes("id_token")) {
       const idToken = new URLSearchParams(hash.replace("#", "?")).get("id_token");
       sessionStorage.setItem("cognito_id_token", idToken);
 
