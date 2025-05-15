@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/0d4bf9f3-7125-490a-9790-9a68be751489">
+<img src="https://github.com/user-attachments/assets/da117a4c-1c0c-47a5-8252-0a09bc94775b">
 
 # AcroDB
 
@@ -10,11 +10,11 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 
 <img src="https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138" width="100%" height="100%">
 
-## Web User Interface
-
-<img src="https://github.com/user-attachments/assets/691c4348-1556-46c4-8984-078b21f2f9aa" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
-<img src="https://github.com/user-attachments/assets/7bc3b2e0-c9a7-419d-bbfa-5010a7cf2f14" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
-<img src="https://github.com/user-attachments/assets/7da9223b-b963-402f-9d5a-8d36c11eae8b" width="75%" height="75%">
+## acrodb.io
+<em>Website is now live!</em><br/><br/>
+<img src="https://github.com/user-attachments/assets/82576bd9-50d2-45c7-8193-fff01a2565d5" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
+<img src="https://github.com/user-attachments/assets/f73997bb-a530-4bdc-b5b7-b9fb7ea854b6" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
+<img src="https://github.com/user-attachments/assets/94287189-081c-43e8-b614-c193a2241e53" width="75%" height="75%">
 
 ## File Directory Structure
 
