@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Container, Nav, Modal, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
@@ -7,7 +6,6 @@ import { AiFillOpenAI } from "react-icons/ai";
 import { FaAws } from "react-icons/fa";
 
 function NavBar() {
-  const navigate = useNavigate();
   const [showHelp, setShowHelp] = useState(false);
 
 
@@ -15,7 +13,7 @@ function NavBar() {
     sessionStorage.removeItem("openai_api_key");
     sessionStorage.removeItem("aws_creds");
     sessionStorage.removeItem("cognito_id_token");
-    navigate("/auth");
+    window.location.href = "https://www.acrodb.io/auth";
   };
 
   return (
@@ -40,7 +38,7 @@ function NavBar() {
           </Nav.Link>
           {/* Center: Brand */}
           <div className="text-center m-0">
-            <Navbar.Brand as={Link} to="/">
+            <Navbar.Brand>
               <h1 className="display-4 text-warning m-0">Acro<span className="text-white m-0">DB</span></h1>
               <small className="text-white d-block" style={{ fontSize: "1rem" }}>
                 Chat-queried NoSQL database for gymnasts and parkour practitioners.
