@@ -1,4 +1,5 @@
-<img src="https://github.com/user-attachments/assets/78821857-ea17-490f-b525-341c0758d182">
+![image](https://github.com/user-attachments/assets/39b7c2d8-a2e3-40fa-a73b-5c8cbfe18ba5)
+
 
 # AcroDB
 
@@ -12,6 +13,6 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 
 ## acrodb.io
 <em>Website is live!</em><br/><br/>
-<img src="https://github.com/user-attachments/assets/278afb38-f742-4c63-a9ee-852fe4ef84d0" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
-<img src="https://github.com/user-attachments/assets/f26572fb-f96d-41a7-835a-a0f42b384df9" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
-<img src="https://github.com/user-attachments/assets/5fe3b7a0-0c12-462f-bc89-73a9029740f4" width="75%" height="75%">
+<img src="https://github.com/user-attachments/assets/ffca24e2-dafa-4dcd-88b8-ac8c83748e55" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
+<img src="https://github.com/user-attachments/assets/cd1bf296-5deb-46c4-8e52-27b877d11ac2" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
+<img src="https://github.com/user-attachments/assets/5cbaff8f-8b8c-41ef-8f37-bed5db61aa38" width="75%" height="75%">
