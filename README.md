@@ -9,10 +9,10 @@ Chat-queried NoSQL database for gymnasts and parkour practitioners.
 [![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
 
-<img src="https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138" width="100%" height="100%">
+<img src="https://github.com/user-attachments/assets/c2b2d071-127e-4fc8-a959-a2ae59b65138">
 
 ## acrodb.io
 <em>Website is live!</em><br/><br/>
-<img src="https://github.com/user-attachments/assets/ffca24e2-dafa-4dcd-88b8-ac8c83748e55" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
-<img src="https://github.com/user-attachments/assets/cd1bf296-5deb-46c4-8e52-27b877d11ac2" width="75%" height="75%"> <br/> $\rightarrow$ <br/>
-<img src="https://github.com/user-attachments/assets/5cbaff8f-8b8c-41ef-8f37-bed5db61aa38" width="75%" height="75%">
+<img src="https://github.com/user-attachments/assets/ffca24e2-dafa-4dcd-88b8-ac8c83748e55"> <br/> $\rightarrow$ <br/>
+<img src="https://github.com/user-attachments/assets/cd1bf296-5deb-46c4-8e52-27b877d11ac2"> <br/> $\rightarrow$ <br/>
+<img src="https://github.com/user-attachments/assets/5cbaff8f-8b8c-41ef-8f37-bed5db61aa38">
