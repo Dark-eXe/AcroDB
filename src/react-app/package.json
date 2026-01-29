@@ -10,7 +10,7 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
     "amazon-cognito-identity-js": "^6.3.15",
-    "aws-sdk": "^2.1692.0",
+    "aws-sdk": "^2.1693.0",
     "bootstrap": "^5.3.3",
     "jwt-decode": "^4.0.0",
     "oidc-client-ts": "^3.2.0",
