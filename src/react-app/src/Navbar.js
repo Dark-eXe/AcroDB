@@ -80,7 +80,7 @@ function NavBar() {
         </Modal.Header>
         <Modal.Body>
           <ul className="text-start">
-            <li> <strong> API endpoint is currently on pause. Contact administrator (see GitHub) to query reactivation.</strong></li>
+            {/*<li> <strong> API endpoint is currently on pause. Contact administrator (see GitHub) to query reactivation.</strong></li>*/}
             <li><button className="btn btn-outline-warning btn-sm mb-2"><FaAws/></button> Login securely with AWS (it's free)</li>
             <li><button className="btn btn-outline-warning btn-sm"><AiFillOpenAI/></button> Input your OpenAI API key to query <br/> 
               {/*eslint-disable-next-line*/}
